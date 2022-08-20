@@ -275,7 +275,7 @@ class DuplicateCorrection:
         # 1) loop through each child of widget except for enable/disable frame
         for child in parent.winfo_children():
             widget_type = child.winfo_class()
-            if widget_type not in ('Frame', 'Labelframe', 'Canvas'):
+            if widget_type not in ('Frame', 'Labelframe', 'Canvas', 'Scrollbar'):
                 child.configure(state='disable')
             else:
                 # 2) Repeats loops with sub_children of widget
@@ -345,6 +345,10 @@ class DuplicateCorrection:
         # 8) Update GUI depending on volume of duplicates found
         if multiple_desc.empty:
             self.dupe_limit = False
+            self.main.desc_accepted = True
+            self.imported_tb['Desc. New'] = self.imported_tb['Desc.']
+            print(self.imported_tb)
+            self.main.final_tb = self.imported_tb
             self.warn_label.config(text='No inconsistent descriptions found. Proceed to COA Mapping Tab.',
                                    fg='#8ace7e')
 
