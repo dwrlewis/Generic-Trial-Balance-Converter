@@ -1,5 +1,4 @@
 import tkinter as tk
-
 import pandas as pd
 from tkinter import ttk
 from tkinter import tix
@@ -12,7 +11,7 @@ from data_export import DataExport
 # Pandas Print Display Options
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-pd.set_option('display.max_colwidth', 15)
+pd.set_option('display.max_colwidth', None)
 pd.set_option('display.width', None)
 
 
@@ -21,6 +20,7 @@ class MainFrame:
         # Master Options
         master.title('Trial Balance Batch Converter')
         master.geometry('900x700')
+        master.minsize(900, 700)
 
         # GUI Tabs
         master_tab = ttk.Notebook(master)

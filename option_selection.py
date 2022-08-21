@@ -252,7 +252,7 @@ class PrefixOptions:
         self.load_frame_2.columnconfigure(0, weight=1)
         self.load_frame_2.rowconfigure(0, weight=1)
 
-        self.load_label = tk.Label(self.load_frame_2, text='', anchor='center')
+        self.load_label = tk.Label(self.load_frame_2, text='', anchor='w')
         self.load_label.grid(row=0, column=0, sticky='NSW')
         # endregion
 

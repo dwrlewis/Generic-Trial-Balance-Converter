@@ -219,8 +219,10 @@ class CoaConfigure:
 
         self.save_coa_frame_2 = tk.Frame(self.top_frame)
         self.save_coa_frame_2.grid(row=2, column=1, sticky='NSEW')
+        self.save_coa_frame_2.columnconfigure(0, weight=1)
+        self.save_coa_frame_2.rowconfigure(0, weight=1)
 
-        self.save_coa_label = tk.Label(self.save_coa_frame_2, text='', anchor='center')
+        self.save_coa_label = tk.Label(self.save_coa_frame_2, text='', anchor='w')
         self.save_coa_label.grid(row=0, column=0, sticky='NSW')
 
         self.disable_children(self.automap_frame)
@@ -434,6 +436,7 @@ class CoaConfigure:
 
     def save_mappings(self):
         error_flag = False
+        minor_flag = False
         # Check if new COA has been generated yet
         if self.coa.empty:
             self.save_coa_label.config(text='Please Map COA, FSAs have not been loaded')
@@ -452,16 +455,21 @@ class CoaConfigure:
             # 1) Generate list from tkinter canvas GUI
             widgets = self.data_can_sub_frame.winfo_children()
             widget_list = [widgets[y:y + 2] for y in range(0, len(widgets), 2)]
+            print(widget_list)
             row: list
             new_mappings = [[row[0].get(), row[1].get()] for row in widget_list]
 
             # Check if any descriptions have been left unmapped
             for row in widget_list:
+                print(row)
                 if len(row[1].get()) == 0:
                     error_flag = True
-                    row[0].config(bg='#ff684c')
+                    row[0].config(readonlybackground='#ff684c')
+                elif row[1].get() in self.fsa_list:
+                    row[0].config(readonlybackground='#8ace7e')
                 else:
-                    row[0].config(bg='#8ace7e')
+                    row[0].config(readonlybackground='#ffda66')
+                    minor_flag = True
 
             if not error_flag:
                 # 2) Convert GUI list to dataframe
@@ -479,7 +487,12 @@ class CoaConfigure:
                 print('======= FINAL COA - REMAPPED NONE-STANDARDS =======')
                 print(self.main.final_coa)
 
-                self.save_coa_label.config(text='COA Mappings have been saved.')
+                if not minor_flag:
+                    self.save_coa_label.config(text='COA Mappings saved.', fg='#8ace7e')
+                else:
+                    self.save_coa_label.config(text='COA Mappings saved. '
+                                                    'NOTE: Some non-standard FSAs retained, '
+                                                    'highlighted yellow.', fg='#8ace7e')
 
             else:
                 self.save_coa_label.config(text='Blank FSA mappings highlighted, please select.')

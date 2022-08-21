@@ -197,8 +197,10 @@ class DuplicateCorrection:
 
         self.replace_desc_frame_2 = tk.Frame(self.top_frame)
         self.replace_desc_frame_2.grid(row=2, column=1, sticky='NSEW')
+        self.replace_desc_frame_2.columnconfigure(0, weight=1)
+        self.replace_desc_frame_2.rowconfigure(0, weight=1)
 
-        self.replace_desc_label = tk.Label(self.replace_desc_frame_2, text='', anchor='center')
+        self.replace_desc_label = tk.Label(self.replace_desc_frame_2, text='', anchor='w')
         self.replace_desc_label.grid(row=0, column=0, sticky='NSW')
 
         # Disable elements initially

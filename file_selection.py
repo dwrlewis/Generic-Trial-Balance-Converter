@@ -84,7 +84,7 @@ class FileSelect:
         self.load_button = tk.Button(self.load_frame, text='Load Trial Balances', command=self.load_files, height=3)
         self.load_button.grid(row=1, column=0, sticky='EW')
         # Load Files Label
-        self.load_label = tk.Label(self.load_frame, text='', anchor='center')
+        self.load_label = tk.Label(self.load_frame, text='', anchor='w')
         self.load_label.grid(row=1, column=1, sticky='NSW')
 
     # GUI resizing functions
@@ -125,7 +125,7 @@ class FileSelect:
             # 3) Find .xlsm files in folder , exits function if none found
             tb_files = [file for file in os.listdir(fp) if file.endswith('.xlsm') and not file.startswith('~$')]
             if len(tb_files) == 0:
-                self.fp_text.set('ERROR: No Filepath was selected')
+                self.fp_text.set('ERROR: Directory contains no .xlsm formatted files')
                 self.fp_label.config(fg='#ff684c')
                 for button in self.head_list:
                     button['state'] = 'disable'
@@ -400,7 +400,8 @@ class FileSelect:
             file_no = pd.concat([raw_tb['Filename'], raw_coa['Filename']])
             raw_company = list(dict.fromkeys(raw_tb['Company']))
             self.load_label.config(text='TB data has been imported for ' + str(file_no.nunique())
-                                        + ' files, please review any errors flagged.',
+                                        + ' files, totalling ' + str(len(raw_tb)) + ' TB lines, and '
+                                        + str(len(raw_coa)) + ' COA lines. Please review any errors flagged.',
                                    fg='#8ace7e')
 
             self.main.raw_tb = raw_tb
@@ -424,4 +425,3 @@ class FileSelect:
         print(self.main.raw_coa)
         # print('\n======== UNIQUE COMPANIES LIST ========')
         # print(self.main.raw_company)
-
