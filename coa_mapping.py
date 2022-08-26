@@ -237,22 +237,16 @@ class CoaConfigure:
         if desc_check:
             # region 3) Add unique field to raw COA to filter for unique codes isolated by file
             raw_coa.drop_duplicates(subset=['Filename', 'Code'], inplace=True)
-            print('1) Raw TB*')
-            print(raw_coa)
             # endregion
 
             # region 4) Generate new COA from TB data with corrected descriptions
             coa = final_tb.copy()
             code_field = 'Pref. Code' if self.main.prefix_on else 'Code'
             coa.drop_duplicates(subset=[code_field, 'Filename', 'Desc. New'], inplace=True)
-            print('2) coa with dupes from code_field, Filename, Desc. New dropped*')
-            print(coa)
             # endregion
 
             # region 5) Combine on different fields depending on if prefixes were selected or not
             coa = pd.merge(coa, raw_coa[['Filename', 'Code', 'FSA']], on=['Filename', 'Code'], how='left')
-            print('3) Merged COA on Filename & Code*')
-            print(coa)
             # endregion
 
             # region 6) Extend FSA mappings to other files where no mappings in source file, save to self COA
@@ -260,13 +254,8 @@ class CoaConfigure:
                 raw_coa.drop_duplicates(['Code'], inplace=True)
                 coa = pd.merge(coa, raw_coa[['Code', 'FSA']], on='Code', how='left', suffixes=('', ' Ext.'))
                 coa['FSA'] = coa['FSA'].where(coa['FSA'].notnull(), coa['FSA Ext.'])
-            print('4) COA with extensions to mappings')
-            print(coa)
 
             self.coa = coa[[code_field, 'Desc. New', 'FSA']].copy()
-            print('5) COA with final fields')
-            print(self.coa)
-
             # endregion
 
             # region 7) Get instances of non-standard FSA's in new COA
@@ -275,8 +264,6 @@ class CoaConfigure:
             fsa_flag = fsa_flag[fsa_flag['FSA'].notnull()]
             fsa_flag = fsa_flag['FSA'].unique().tolist()
             fsa_flag.sort(key=str.lower)
-            print('6) Inconsistent FSA flag')
-            print(fsa_flag)
             # endregion
 
             # region 8) Destroy canvas widgets
@@ -286,7 +273,6 @@ class CoaConfigure:
 
             # region 9) Generate canvas GUI if no. of FSA's if below threshold, otherwise set fsa_limit to true
             if len(fsa_flag) == 0:
-                print('ZERO FSA ERRORS')
                 self.fsa_limit = False
                 self.load_warn_label.config(text='New COA generated. No non-standard FSAs found.', fg='#8ace7e')
                 self.main.final_coa = coa.copy()
@@ -439,8 +425,6 @@ class CoaConfigure:
                 # Update master final COA
                 self.main.final_coa = final_fsa.copy()
                 self.main.coa_accepted = True
-                print('7) Remapped FSA')
-                print(final_fsa)
             else:
                 self.save_warn_label.config(text='Blank FSA mappings highlighted, please select.')
                 self.main.coa_accepted = False

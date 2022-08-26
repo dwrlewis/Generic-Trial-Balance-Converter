@@ -409,11 +409,6 @@ class DuplicateCorrection:
             mappings.drop_duplicates(subset=[code_field], keep='first', inplace=True)
             mappings.drop(columns=['TB Period', 'Filter Column', 'String len'], axis=1, inplace=True)
             self.desc_mappings = mappings
-
-            # print('======= DESC. MAPPING - NO GUI DISPLAY =========')
-            # print(self.desc_mappings)
-            # print('Length of desc. Mapping: ' + str(len(tb)))
-            # print('Unique Codes in desc. Mapping: ' + str(tb[code_field].nunique()))
         # endregion
 
     # endregion

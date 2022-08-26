@@ -444,13 +444,4 @@ class FileSelect:
                 self.master.tab(tab, state='disabled')
 
         # endregion
-
-        # region 9) Prints imported datasets
-        # print('\n======== RAW TB DATA ========')
-        # print(self.main.raw_tb)
-        # print('\n======== RAW COA DATA ========')
-        # print(self.main.raw_coa)
-        # print('\n======== UNIQUE COMPANIES LIST ========')
-        # print(self.main.raw_company)
-        # endregion
     # endregion

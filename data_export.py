@@ -136,7 +136,6 @@ class DataExport:
         self.tb_dqi_frame = tk.Frame(self.top_frame)
         self.tb_dqi_frame.grid(row=0, column=1, sticky='NSEW')
         for x in range(1, 3):
-            print(x)
             self.tb_dqi_frame.columnconfigure(x, weight=1)
 
         # TB X axis Headers
@@ -219,7 +218,6 @@ class DataExport:
             entry.grid(row=5, column=x + 1, sticky='NSEW', padx=3, pady=3)
             self.adj_coa_entries.append(entry)
 
-        print(self.settings)
         # endregion
 
         # region ================== 4.0 - Export Path ==================
@@ -395,8 +393,6 @@ class DataExport:
 
                 # region 1) Adjusted TB Export
                 if self.tb_opt_var_list[0].get() == 1:
-                    print('adj. TB selected')
-
                     if desc_on and desc_accepted:
                         tb = self.main.final_tb.copy()
                     elif pref_on and pref_accept:
@@ -424,8 +420,6 @@ class DataExport:
 
                 # region 2) Adjusted COA
                 if self.coa_opt_var_list[0].get() == 1:
-                    print('adj. COA selected')
-
                     coa = self.main.final_coa.copy()
 
                     code_field = 'Pref. Code' if 'Pref. Code' in tb.columns else 'Code'
@@ -444,8 +438,6 @@ class DataExport:
 
                 # region 3) Raw TB Export
                 if self.tb_opt_var_list[1].get() == 1:
-                    print('Raw TB selected')
-
                     tb = self.main.raw_tb
                     for period in ['Prior TB', 'Opening TB', 'Closing TB']:
                         tb_period = tb[tb['TB Period'] == period]
@@ -459,8 +451,6 @@ class DataExport:
 
                 # region 4) Raw COA Export
                 if self.coa_opt_var_list[1].get() == 1:
-                    print('Raw COA selected')
-
                     coa = self.main.raw_coa
                     coa = coa.drop(['Filename'], axis=1)
                     coa.to_excel(writer, sheet_name='Raw COA', index=False)
@@ -469,8 +459,6 @@ class DataExport:
 
                 # region 5) Detailed TB Export
                 if self.tb_opt_var_list[2].get() == 1:
-                    print('Det. TB selected')
-
                     if desc_on and desc_accepted:
                         tb = self.main.final_tb.copy()
                     elif pref_on and pref_accept:
@@ -486,8 +474,6 @@ class DataExport:
 
                 # region 6) Detailed TB Export
                 if self.coa_opt_var_list[2].get() == 1:
-                    print('Det. COA selected')
-
                     coa = self.main.final_coa
                     coa.to_excel(writer, sheet_name='Det. COA', index=False)
                     exports_check = True

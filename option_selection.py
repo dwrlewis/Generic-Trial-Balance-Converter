@@ -616,7 +616,4 @@ class PrefixOptions:
             self.main.prefixed_tb = tb_join
             self.main.prefix_accepted = True
         # endregion
-
-        # print('\n======== PREFIXED TB ========')
-        # print(self.main.prefixed_tb)
     # endregion
