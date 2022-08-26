@@ -253,7 +253,7 @@ class PrefixOptions:
         # self.disable_children(self.load_frame)
         # self.disable_children(self.load_frame_2)
 
-    # region 1.0 - Enable/Disable Tab
+    # region Enable/Disable widgets
     def enable_canvas(self):
         # Generate canvas widgets from companies imported, add warning if above suggested limit
         companies = sorted(self.main.raw_company, key=str.lower)
@@ -349,7 +349,7 @@ class PrefixOptions:
 
     # endregion
 
-    # region 2.0 - Automap/Clear/replace Mappings Functions
+    # region Automap/Clear/Replace Options Functions
     def substring_range(self, _):
         self.string_entry_1.delete(0, tk.END)
         self.string_entry_2.delete(0, tk.END)
@@ -486,7 +486,7 @@ class PrefixOptions:
 
     # endregion
 
-    # region 2.0 - Prefix/Suffix Functions
+    # region Prefix/Suffix Display Functions
     def prefix_toggle(self):
         if self.pref_button.config('text')[-1] == 'Prefix':
             self.pref_button.config(text='Suffix')
@@ -500,10 +500,9 @@ class PrefixOptions:
             self.pref_label_display.config(text='PREFIX' + str(self.pref_divider.get()) + 'CODE')
         else:
             self.pref_label_display.config(text='CODE' + str(self.pref_divider.get()) + 'SUFFIX')
-
     # endregion
 
-    # region 3.0 - Canvas Display, Select Columns
+    # region Canvas Display Weights & Column Selection
     def frame_width(self, event):
         # Updates widths of main and header canvas when adjusted to fit window
         canvas_width = event.width
@@ -538,10 +537,9 @@ class PrefixOptions:
                 child: tk.Entry()
                 if child.grid_info()['column'] == col:
                     child.config(highlightthickness=2, highlightbackground='#64C75F')
-
     # endregion
 
-    # region 4.0 - Save Mappings
+    # region Save Mappings
     def map_prefixes(self):
         # region 1) Flags created for blank companies & no prefixes mapped
         self.main.prefix_accepted = False

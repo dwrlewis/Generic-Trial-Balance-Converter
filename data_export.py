@@ -241,7 +241,7 @@ class DataExport:
         self.export_button.grid(row=0, column=1, sticky='EW')
         # endregion
 
-    # region 1.0 - Check Data & Reset Values
+    # region Check Imported & Transformed Data, Reset GUI values displayed
     def check_data(self):
 
         # region 1) Clear all TB Period widgets & disable all export checks
@@ -357,7 +357,7 @@ class DataExport:
                 self.reset(child)
     # endregion
 
-    # region 4.0 - fp selection & data export
+    # region Filepath selection & data export
     def export_path(self):
         try:
             fp = filedialog.askdirectory(initialdir='/', title='Select a directory')

@@ -181,7 +181,7 @@ class DuplicateCorrection:
         # Disable elements initially
         self.disable_children(self.options_frame)
 
-    # region 1.0 - Enable/Disable Canvas Functions
+    # region Enable/Disable Canvas Functions
     def enable_canvas(self):
         self.main.desc_on = True
         self.on_off_warn_label.config(text='Please adjust formatting options and Check Descriptions')
@@ -226,9 +226,18 @@ class DuplicateCorrection:
 
         self.main.colour(self.can_frame)
 
+    def disable_children(self, parent):
+        # 1) loop through each child of widget except for enable/disable frame
+        for child in parent.winfo_children():
+            widget_type = child.winfo_class()
+            if widget_type not in ('Frame', 'Labelframe', 'Canvas', 'Scrollbar'):
+                child.configure(state='disable')
+            else:
+                # 2) Repeats loops with sub_children of widget
+                self.disable_children(child)
     # endregion
 
-    # region 2.0 - Generate list of descriptions
+    # region Duplicate Description Flagging & Automapping Functions
     def flag_duplicates(self):
         # region 1) Get variables for if prefixes were set on, and if mappings were accepted
         pref_on = self.main.prefix_on
@@ -410,10 +419,9 @@ class DuplicateCorrection:
             mappings.drop(columns=['TB Period', 'Filter Column', 'String len'], axis=1, inplace=True)
             self.desc_mappings = mappings
         # endregion
-
     # endregion
 
-    # region 3.0 - Canvas Display Functions
+    # region Canvas Display Functions
     def config_frame(self, _):
         # Called when size of header/data subframe are adjusted to align with canvas size
         self.data_can.configure(scrollregion=self.data_can.bbox('all'), yscrollcommand=self.data_can_scroll.set)
@@ -433,7 +441,7 @@ class DuplicateCorrection:
 
     # endregion
 
-    # region 4.0 - Save Descriptions
+    # region Save Description Mappings Functions
     def map_desc(self):
         # region 1) Reset final TB, error flags and set code field based on prefix settings
         self.main.final_tb = pd.DataFrame()
@@ -510,17 +518,4 @@ class DuplicateCorrection:
             self.output_label.config(text='ERROR: Internal error, duplicates present after filtering.', fg='#ff684c')
             self.master.tab(3, state='disabled')
         # endregion
-
-    # endregion
-
-    # region misc. - Disable Children
-    def disable_children(self, parent):
-        # 1) loop through each child of widget except for enable/disable frame
-        for child in parent.winfo_children():
-            widget_type = child.winfo_class()
-            if widget_type not in ('Frame', 'Labelframe', 'Canvas', 'Scrollbar'):
-                child.configure(state='disable')
-            else:
-                # 2) Repeats loops with sub_children of widget
-                self.disable_children(child)
     # endregion

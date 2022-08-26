@@ -225,7 +225,7 @@ class CoaConfigure:
         # self.disable_children(self.warning_frame)
         # self.disable_children(self.can_frame)
 
-    # region 1.0 - Load COA
+    # region Generate New COA
     def load_coa(self):
         # region 1) Assign master variables to local for readability
         desc_check = self.main.desc_accepted
@@ -318,7 +318,7 @@ class CoaConfigure:
         # endregion
     # endregion
 
-    # region 2.0 - Automap COA
+    # region Automap COA with Approximate Mappings
     def automap_fsa(self):
         widgets = self.data_can_sub_frame.winfo_children()
         widget_list = [widgets[y:y + 2] for y in range(0, len(widgets), 2)]
@@ -344,7 +344,7 @@ class CoaConfigure:
                     break
     # endregion
 
-    # region 3.0 - Canvas Display Functions
+    # region Canvas Display Functions
     def config_frame(self, _):
         # Called when size of header/data subframe are adjusted to align with canvas size
         self.data_can.configure(scrollregion=self.data_can.bbox('all'), yscrollcommand=self.data_can_scroll.set)
@@ -364,7 +364,7 @@ class CoaConfigure:
 
     # endregion
 
-    # region 4.0 - Save Mappings
+    # region Save COA Mappings
     def save_map(self):
         error_flag = False
         minor_flag = False
@@ -432,7 +432,7 @@ class CoaConfigure:
         # endregion
     # endregion
 
-    # region Misc. - Enable/Disable Canvas Functions
+    # region Enable/Disable Widget Functions
     def enable_children(self, parent):
         # 1) loop through each child of widget except for enable/disable frame
         for child in parent.winfo_children():
