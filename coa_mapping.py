@@ -95,25 +95,25 @@ class CoaConfigure:
         # endregion
 
         # region ================== 1.0 - Load Mappings ==================
+        # Load Mappings Header Frame and Label
         self.load_frame = tk.Frame(self.top_frame)
         self.load_frame.grid(row=0, column=0, sticky='NSEW')
         self.load_frame.columnconfigure(0, weight=1)
-        # Load Mappings Header Label
-        self.load_label = tk.Label(self.load_frame, text='Select Mapping options & load COA')
-        self.load_label.grid(row=0, column=0, sticky='NSEW')
+        self.load_label = tk.Label(self.load_frame, text='Select COA Mapping Sources:')
+        self.load_label.grid(row=0, column=0, sticky='W')
         # Set COA Source Radio Buttons
         self.coa_var = tk.IntVar()
-        self.coa_isolate = tk.Radiobutton(self.load_frame, text='Map COA from source TB', variable=self.coa_var, value=0)
-        self.coa_isolate.grid(row=1, column=0, sticky='W')
-        self.coa_extend = tk.Radiobutton(self.load_frame, text='Extend mappings to all TBs', variable=self.coa_var, value=1)
-        self.coa_extend.grid(row=2, column=0, sticky='W')
-        self.coa_map = tk.Button(self.load_frame, text='Map Chart of Accounts', command=self.load_coa)
-        self.coa_map.grid(row=3, column=0, sticky='EW')
+        self.load_isolate = tk.Radiobutton(self.load_frame, text='Source TB Only', variable=self.coa_var, value=0)
+        self.load_isolate.grid(row=1, column=0, sticky='W')
+        self.load_extend = tk.Radiobutton(self.load_frame, text='Extend to all TBs', variable=self.coa_var, value=1)
+        self.load_extend.grid(row=2, column=0, sticky='W')
+        self.load_map = tk.Button(self.load_frame, text='Map Chart of Accounts', command=self.load_coa)
+        self.load_map.grid(row=3, column=0, sticky='EW')
         # Warning Frame and Label
-        self.warning_frame = tk.Frame(self.top_frame)
-        self.warning_frame.grid(row=0, column=1, sticky='NSEW')
-        self.warn_label = tk.Label(self.warning_frame)
-        self.warn_label.grid(row=0, column=0, sticky='W')
+        self.save_warn_frame = tk.Frame(self.top_frame)
+        self.save_warn_frame.grid(row=0, column=1, sticky='NSEW')
+        self.load_warn_label = tk.Label(self.save_warn_frame)
+        self.load_warn_label.grid(row=0, column=0, sticky='W')
         # endregion
 
         # region ================== 2.0 - Load FSA options ==================
@@ -123,37 +123,37 @@ class CoaConfigure:
         self.options_frame.columnconfigure(0, weight=1)
 
         # region ================== 2.1 - Results Frame ==================
-        self.results_frame = tk.Frame(self.options_frame)
-        self.results_frame.grid(row=0, column=0, sticky='NSEW', padx=5, pady=5)
+        self.result_frame = tk.Frame(self.options_frame)
+        self.result_frame.grid(row=0, column=0, sticky='NSEW', padx=5, pady=5)
         for x in range(2):
-            self.results_frame.columnconfigure(x, weight=1)
+            self.result_frame.columnconfigure(x, weight=1)
         # Display labels for COA mappings
-        self.coa_total_codes_label = tk.Label(self.results_frame, text='Total Mapped Codes:')
-        self.coa_total_codes_label.grid(row=0, column=0, sticky='W')
-        self.coa_total_codes = tk.Label(self.results_frame, text='-')
-        self.coa_total_codes.grid(row=0, column=1, sticky='W')
-        self.coa_mapped_codes_label = tk.Label(self.results_frame, text='Total Unmapped Codes:')
-        self.coa_mapped_codes_label.grid(row=1, column=0, sticky='W')
-        self.coa_mapped_codes = tk.Label(self.results_frame, text='-')
-        self.coa_mapped_codes.grid(row=1, column=1, sticky='W')
-        self.coa_non_standard_label = tk.Label(self.results_frame, text='Total Non-Standard FSA:')
-        self.coa_non_standard_label.grid(row=2, column=0, sticky='W')
-        self.coa_non_standard = tk.Label(self.results_frame, text='-')
-        self.coa_non_standard.grid(row=2, column=1, sticky='W')
+        self.result_label_map = tk.Label(self.result_frame, text='Total Mapped Codes:')
+        self.result_label_map.grid(row=0, column=0, sticky='W')
+        self.result_mapped = tk.Label(self.result_frame, text='-')
+        self.result_mapped.grid(row=0, column=1, sticky='W')
+        self.result_label_unmap = tk.Label(self.result_frame, text='Total Unmapped Codes:')
+        self.result_label_unmap.grid(row=1, column=0, sticky='W')
+        self.result_unmapped = tk.Label(self.result_frame, text='-')
+        self.result_unmapped.grid(row=1, column=1, sticky='W')
+        self.result_label_misc = tk.Label(self.result_frame, text='Total Non-Standard FSA:')
+        self.result_label_misc.grid(row=2, column=0, sticky='W')
+        self.result_misc = tk.Label(self.result_frame, text='-')
+        self.result_misc.grid(row=2, column=1, sticky='W')
         # endregion
 
         # region ================== 2.2 - Automap Frame ==================
-        self.automap_frame = tk.Frame(self.options_frame)
-        self.automap_frame.grid(row=1, column=0, sticky='NSEW', padx=5, pady=5)
-        self.automap_frame.columnconfigure(0, weight=1)
+        self.map_frame = tk.Frame(self.options_frame)
+        self.map_frame.grid(row=1, column=0, sticky='NSEW', padx=5, pady=5)
+        self.map_frame.columnconfigure(0, weight=1)
         # Original/Approximate Mappings Radio Buttons
         self.map_var = tk.IntVar()
-        self.map_isolate = tk.Radiobutton(self.automap_frame, text='Maintain non-standard FSAs', variable=self.map_var, value=0)
-        self.map_isolate.grid(row=0, column=0, sticky='W')
-        self.map_isolate = tk.Radiobutton(self.automap_frame, text='Approx. Mapping', variable=self.map_var, value=1)
-        self.map_isolate.grid(row=1, column=0, sticky='W')
+        self.map_ori = tk.Radiobutton(self.map_frame, text='Maintain non-standard FSAs', variable=self.map_var, value=0)
+        self.map_ori.grid(row=0, column=0, sticky='W')
+        self.map_approx = tk.Radiobutton(self.map_frame, text='Approx. Mapping', variable=self.map_var, value=1)
+        self.map_approx.grid(row=1, column=0, sticky='W')
         # Map FSAs
-        self.map_button = tk.Button(self.automap_frame, text='Auto-Map non-standard FSAs', command=self.automap_fsa)
+        self.map_button = tk.Button(self.map_frame, text='Auto-Map non-standard FSAs', command=self.automap_fsa)
         self.map_button.grid(row=2, column=0, sticky='EW')
         # endregion
 
@@ -205,19 +205,19 @@ class CoaConfigure:
         # endregion
 
         # region ================== 4.0 - Save COA Mapping ==================
-        self.save_coa_frame = tk.Label(self.top_frame)
-        self.save_coa_frame.grid(row=2, column=0, sticky='NSEW')
-        self.save_coa_frame.columnconfigure(0, weight=1)
+        self.save_frame = tk.Label(self.top_frame)
+        self.save_frame.grid(row=2, column=0, sticky='NSEW')
+        self.save_frame.columnconfigure(0, weight=1)
         # Save FSA mappings Button
-        self.replace_desc_button = tk.Button(self.save_coa_frame, text='Check & Save Mappings:', height=3, command=self.save_mappings)
-        self.replace_desc_button.grid(row=0, column=0, sticky='EW')
+        self.save_button = tk.Button(self.save_frame, text='Check & Save Mappings:', height=3, command=self.save_map)
+        self.save_button.grid(row=0, column=0, sticky='EW')
         # Display output errors
-        self.warning_frame = tk.Frame(self.top_frame)
-        self.warning_frame.grid(row=2, column=1, sticky='NSEW')
-        self.warning_frame.columnconfigure(0, weight=1)
-        self.warning_frame.rowconfigure(0, weight=1)
-        self.warning_label = tk.Label(self.warning_frame, text='', anchor='w')
-        self.warning_label.grid(row=0, column=0, sticky='NSW')
+        self.save_warn_frame = tk.Frame(self.top_frame)
+        self.save_warn_frame.grid(row=2, column=1, sticky='NSEW')
+        self.save_warn_frame.columnconfigure(0, weight=1)
+        self.save_warn_frame.rowconfigure(0, weight=1)
+        self.save_warn_label = tk.Label(self.save_warn_frame, text='', anchor='w')
+        self.save_warn_label.grid(row=0, column=0, sticky='NSW')
         # endregion
 
         # self.disable_children(self.automap_frame)
@@ -287,7 +287,7 @@ class CoaConfigure:
             # region 9) Generate canvas GUI if no. of FSA's if below threshold, otherwise set fsa_limit to true
             if len(fsa_flag) == 0:
                 self.fsa_limit = False
-                self.warn_label.config(text='New COA has been generated. No non-standard FSAs found.')
+                self.load_warn_label.config(text='New COA has been generated. No non-standard FSAs found.')
                 self.main.final_coa = coa.copy()
                 self.main.coa_accepted = True
                 # DISABLE AUTO-MAPPING
@@ -312,21 +312,21 @@ class CoaConfigure:
                     multiple_desc.current(fsa_options.index(x))
             else:
                 self.fsa_limit = True
-                self.warn_label.config(text='No. of non-standard mappings exceeds ' + str(len(fsa_flag)) +
+                self.load_warn_label.config(text='No. of non-standard mappings exceeds ' + str(len(fsa_flag)) +
                                             ', too large to display. Adjust manually after export.')
                 # DISABLE AUTO-MAPPING
             # endregion
 
             # region 10) Update GUI code listings for no. of unmapped/irregular mappings
-            self.coa_total_codes.config(text=coa[code_field].nunique())
+            self.result_mapped.config(text=coa[code_field].nunique())
             # self.coa_mapped_codes.config(text=coa['FSA Orig. + Ext.'].isna().sum())
-            self.coa_mapped_codes.config(text=coa['FSA'].isna().sum())
-            self.coa_non_standard.config(text=len(fsa_flag))
-            self.warn_label.config(text='New COA has been generated. Please review any non-standard mappings.')
+            self.result_unmapped.config(text=coa['FSA'].isna().sum())
+            self.result_misc.config(text=len(fsa_flag))
+            self.load_warn_label.config(text='New COA has been generated. Please review any non-standard mappings.')
             # endregion
 
         else:
-            self.warn_label.config(text='Description mappings have not been approved in previous tab. Please revise.')
+            self.load_warn_label.config(text='Desc. mappings have not been approved in previous tab. Please revise.')
         # endregion
     # endregion
 
@@ -377,13 +377,13 @@ class CoaConfigure:
     # endregion
 
     # region 4.0 - Save Mappings
-    def save_mappings(self):
+    def save_map(self):
         error_flag = False
         minor_flag = False
 
         # region 1) Check if new COA has been generated yet
         if self.coa.empty:
-            self.warning_label.config(text='Please Map COA, FSAs have not been loaded')
+            self.save_warn_label.config(text='Please Map COA, FSAs have not been loaded')
         # endregion
 
         # region 2) If inconsistent mappings exceeded GUI display limits used new COA with original mappings
@@ -430,17 +430,17 @@ class CoaConfigure:
                 final_fsa['FSA Remap'].fillna(final_fsa['FSA'], inplace=True)
                 # Update GUI comment
                 if not minor_flag:
-                    self.warning_label.config(text='Mappings saved.', fg='#8ace7e')
+                    self.save_warn_label.config(text='FSAs saved.', fg='#8ace7e')
                 else:
-                    self.warning_label.config(text='Mappings saved. NOTE: Non-standard FSAs retained, shown in yellow.',
-                                              fg='#8ace7e')
+                    self.save_warn_label.config(text='FSAs saved. NOTE: Non-standard FSAs retained, shown in yellow.',
+                                                fg='#8ace7e')
                 # Update master final COA
                 self.main.final_coa = final_fsa.copy()
                 self.main.coa_accepted = True
                 print('7) Remapped FSA')
                 print(final_fsa)
             else:
-                self.warning_label.config(text='Blank FSA mappings highlighted, please select.')
+                self.save_warn_label.config(text='Blank FSA mappings highlighted, please select.')
                 self.main.coa_accepted = False
             # endregion
         # endregion

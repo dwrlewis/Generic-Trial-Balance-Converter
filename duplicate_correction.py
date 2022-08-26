@@ -38,20 +38,20 @@ class DuplicateCorrection:
         self.on_off_label = tk.Label(self.on_off_frame, text='Correct inconsistent account descriptions:')
         self.on_off_label.grid(row=0, column=0, columnspan=2, sticky='EW')
         # Desc. On/Off Radio-Buttons
-        self.desc_remap_var = tk.IntVar(value=0)
-        self.on_button = tk.Radiobutton(self.on_off_frame, text='Yes', variable=self.desc_remap_var, value=1,
+        self.desc_var = tk.IntVar(value=0)
+        self.on_button = tk.Radiobutton(self.on_off_frame, text='Yes', variable=self.desc_var, value=1,
                                         command=self.enable_canvas)
         self.on_button.grid(row=1, column=0)
-        self.off_button = tk.Radiobutton(self.on_off_frame, text='No', variable=self.desc_remap_var, value=0,
+        self.off_button = tk.Radiobutton(self.on_off_frame, text='No', variable=self.desc_var, value=0,
                                          command=self.disable_canvas)
         self.off_button.grid(row=1, column=1)
         # Desc. Warning Frame & Label
-        self.warning_frame = tk.Frame(self.top_frame)
-        self.warning_frame.grid(row=0, column=1, sticky='NSEW')
-        self.warn_label = tk.Label(self.warning_frame, fg='#8ace7e',
-                                   text='Descriptions will not be adjusted. New COA cannot be generated without\n'
-                                        'checking descriptions first, unadjusted raw COA will be exported instead.')
-        self.warn_label.grid(row=0, column=0, sticky='W')
+        self.on_off_warn_frame = tk.Frame(self.top_frame)
+        self.on_off_warn_frame.grid(row=0, column=1, sticky='NSEW')
+        self.on_off_warn_label = tk.Label(self.on_off_warn_frame, fg='#8ace7e',
+                                          text='Descriptions will not be adjusted. COA cannot be generated without\n'
+                                               ' checking descriptions, raw COA will be exported instead.')
+        self.on_off_warn_label.grid(row=0, column=0, sticky='W')
         # endregion
 
         # region ================== 2.0 - Options Frame ==================
@@ -62,73 +62,61 @@ class DuplicateCorrection:
         # region ================== 2.1 - Join Mappings ==================
         self.join_frame = tk.Frame(self.options_frame)
         self.join_frame.grid(row=1, column=0, sticky='NSEW', padx=5, pady=5)
-        self.join_frame.columnconfigure(0, weight=1)
+        for x in range(3):
+            self.join_frame.columnconfigure(x, weight=1)
         # Header Label - "Check Descriptions"
-        self.join_frame_label = tk.Label(self.join_frame, text='Check Descriptions:')
-        self.join_frame_label.grid(row=0, column=0, sticky='W')
+        self.join_label_header = tk.Label(self.join_frame, text='Check Descriptions:')
+        self.join_label_header.grid(row=0, column=0, columnspan=3, sticky='W')
         # Trim blanks checkbox
-        self.trim = tk.IntVar()
-        self.trim.set(1)
-        self.trim_checkbox = tk.Checkbutton(self.join_frame, text='Trim leading & trailing spaces',
-                                            variable=self.trim)
-        self.trim_checkbox.grid(row=1, column=0, sticky='W')
-        # Map to upper/lower cases
-        self.case_frame = tk.Frame(self.join_frame)
-        self.case_frame.grid(row=2, column=0, sticky='EW')
+        self.trim_var = tk.IntVar()
+        self.trim_var.set(1)
+        self.join_check = tk.Checkbutton(self.join_frame, text='Trim leading & trailing spaces', variable=self.trim_var)
+        self.join_check.grid(row=1, column=0, columnspan=3, sticky='W')
         # Header Label - "Adjust description casings"
-        self.case_label = tk.Label(self.case_frame, text='Adjust description casings:')
-        self.case_label.grid(row=0, column=0, columnspan=3, sticky='W')
+        self.case_label = tk.Label(self.join_frame, text='Adjust Description Casings:')
+        self.case_label.grid(row=2, column=0, columnspan=3, sticky='W')
         # Case Changing - Radio Button
         self.case_var = tk.IntVar(value=0)
-        self.case_upper = tk.Radiobutton(self.case_frame, text='No Change', variable=self.case_var, value=0)
-        self.case_upper.grid(row=1, column=0)
-        self.case_lower = tk.Radiobutton(self.case_frame, text='Lower', variable=self.case_var, value=1)
-        self.case_lower.grid(row=1, column=1)
-        self.case_lower = tk.Radiobutton(self.case_frame, text='Upper', variable=self.case_var, value=2)
-        self.case_lower.grid(row=1, column=2)
+        self.join_upper = tk.Radiobutton(self.join_frame, text='No Change', variable=self.case_var, value=0)
+        self.join_upper.grid(row=3, column=0)
+        self.join_lower = tk.Radiobutton(self.join_frame, text='Lower', variable=self.case_var, value=1)
+        self.join_lower.grid(row=3, column=1)
+        self.join_lower = tk.Radiobutton(self.join_frame, text='Upper', variable=self.case_var, value=2)
+        self.join_lower.grid(row=3, column=2)
         # Check duplicates button
         self.join_button = tk.Button(self.join_frame, text='Check Descriptions:', command=self.flag_duplicates)
-        self.join_button.grid(row=3, column=0, sticky='NSEW')
+        self.join_button.grid(row=4, column=0, columnspan=3, sticky='NSEW')
         # endregion
 
         # region ================== 2.2 - Auto Mappings ==================
-        self.auto_map_frame = tk.Frame(self.options_frame)
-        self.auto_map_frame.grid(row=2, column=0, sticky='NSEW', padx=5, pady=5)
-        self.auto_map_frame.columnconfigure(0, weight=1)
-        # Header Label - "Auto Map Descriptions"
-        self.auto_map_label = tk.Label(self.auto_map_frame, text='Auto Map Descriptions:')
-        self.auto_map_label.grid(row=0, column=0, sticky='W')
-        # Priority mapping Option menu
+        # Auto-Mapping Frame & Label
+        self.map_frame = tk.Frame(self.options_frame)
+        self.map_frame.grid(row=2, column=0, sticky='NSEW', padx=5, pady=5)
+        self.map_frame.columnconfigure(0, weight=1)
+        self.map_label = tk.Label(self.map_frame, text='Auto Map Descriptions:')
+        self.map_label.grid(row=0, column=0, columnspan=2, sticky='W')
+        # Auto-Mapping Tab Priority
         self.priority = tk.StringVar()
-        self.auto_map_list = ['CL > OP > PY',
-                              'CL > PY > OP',
-                              'OP > CL > PY',
-                              'OP > PY > CL',
-                              'PY > OP > CL',
-                              'PY > CL > OP'
-                              ]
-        self.auto_map_options = ttk.Combobox(self.auto_map_frame, textvariable=self.priority, values=self.auto_map_list)
-        self.auto_map_options.current(0)
-        self.auto_map_options.grid(row=1, column=0, columnspan=2, sticky='NSEW')
-
-        # Header Label - "String Priority"
-        self.str_len_frame = tk.Label(self.auto_map_frame, text='String prioritization rule:')
-        self.str_len_frame.grid(row=2, column=0, columnspan=2, sticky='W')
-        # Radio button Var
-        self.str_len_var = tk.IntVar()
-        self.str_len_var.set(0)
-        self.str_len_upper = tk.Radiobutton(self.auto_map_frame, text='Longest string', variable=self.str_len_var,
-                                            value=0)
-        self.str_len_upper.grid(row=3, column=0)
-        self.str_len_lower = tk.Radiobutton(self.auto_map_frame, text='First instance', variable=self.str_len_var,
-                                            value=1)
-        self.str_len_lower.grid(row=3, column=1)
-
+        self.map_list = ['CL > OP > PY',
+                         'CL > PY > OP',
+                         'OP > CL > PY',
+                         'OP > PY > CL',
+                         'PY > OP > CL',
+                         'PY > CL > OP'
+                         ]
+        self.map_options = ttk.Combobox(self.map_frame, textvariable=self.priority, values=self.map_list)
+        self.map_options.current(0)
+        self.map_options.grid(row=1, column=0, columnspan=2, sticky='NSEW')
+        # Auto-Mapping Formatting Priority
+        self.map_var = tk.IntVar(value=0)
+        self.map_upper = tk.Radiobutton(self.map_frame, text='Longest string', variable=self.map_var, value=0)
+        self.map_upper.grid(row=3, column=0)
+        self.map_lower = tk.Radiobutton(self.map_frame, text='First instance', variable=self.map_var, value=1)
+        self.map_lower.grid(row=3, column=1)
         # Check duplicates button
-        self.auto_map_button = tk.Button(self.auto_map_frame, text='Auto-Map Descriptions', command=self.auto_map_desc)
-        self.auto_map_button.grid(row=4, column=0, columnspan=2, sticky='NSEW')
+        self.map_button = tk.Button(self.map_frame, text='Auto-Map Descriptions', command=self.auto_map_desc)
+        self.map_button.grid(row=4, column=0, columnspan=2, sticky='NSEW')
         # endregion
-
         # endregion
 
         # region ================== 3.0 - Main Canvas Frame ==================
@@ -173,26 +161,21 @@ class DuplicateCorrection:
         self.data_can_scroll = tk.Scrollbar(self.can_frame, orient="vertical", command=self.data_can.yview)
         self.data_can_scroll.grid(row=1, column=3, sticky='NS')
         # endregion
-
         # endregion
 
         # region ================== 4.0 - Check Button ==================
-        self.replace_desc_frame = tk.Label(self.top_frame)
-        self.replace_desc_frame.grid(row=2, column=0, sticky='NSEW')
-        self.replace_desc_frame.columnconfigure(0, weight=1)
-        # Check mappings button
-        self.replace_desc_button = tk.Button(self.replace_desc_frame, text='Check & Save Mappings:', height=3,
-                                             command=self.map_descriptions)
-        self.replace_desc_button.grid(row=0, column=0, sticky='EW')
-
-        self.output_comment_frame = tk.Frame(self.top_frame)
-        self.output_comment_frame.grid(row=2, column=1, sticky='NSEW')
-        self.output_comment_frame.columnconfigure(0, weight=1)
-        self.output_comment_frame.rowconfigure(0, weight=1)
-
-        self.output_label = tk.Label(self.output_comment_frame, text='', anchor='w')
+        # Save Frame & Button
+        self.save_frame = tk.Label(self.top_frame)
+        self.save_frame.grid(row=2, column=0, sticky='NSEW')
+        self.save_frame.columnconfigure(0, weight=1)
+        self.save_button = tk.Button(self.save_frame, text='Check & Save Mappings:', height=3, command=self.map_desc)
+        self.save_button.grid(row=0, column=0, sticky='EW')
+        # Output Frame & Label
+        self.output_frame = tk.Frame(self.top_frame)
+        self.output_frame.grid(row=2, column=1, sticky='NSEW')
+        self.output_frame.columnconfigure(0, weight=1)
+        self.output_label = tk.Label(self.output_frame, text='', anchor='w')
         self.output_label.grid(row=0, column=0, sticky='NSW')
-
         # endregion
 
         # Disable elements initially
@@ -201,7 +184,7 @@ class DuplicateCorrection:
     # region 1.0 - Enable/Disable Canvas Functions
     def enable_canvas(self):
         self.main.desc_on = True
-        self.warn_label.config(text='Please adjust formatting options and Check Descriptions')
+        self.on_off_warn_label.config(text='Please adjust formatting options and Check Descriptions')
         self.enable_children(self.join_frame)
 
     def enable_children(self, parent):
@@ -216,7 +199,7 @@ class DuplicateCorrection:
 
     def disable_canvas(self):
         self.main.desc_on = False
-        # Resets canvas (recheck for memory leaks)
+        # Resets canvas
         self.data_can.delete()
         self.data_can.delete(self.data_can_window)
         # New Canvas
@@ -235,9 +218,9 @@ class DuplicateCorrection:
         self.data_can_scroll = tk.Scrollbar(self.can_frame, orient="vertical", command=self.data_can.yview)
         self.data_can_scroll.grid(row=1, column=3, sticky='NS')
 
-        self.warn_label.config(text='Descriptions will not be adjusted. New COA cannot be generated without\n'
-                                    'checking descriptions first, unadjusted raw COA will be exported instead.',
-                               fg='#8ace7e')
+        self.on_off_warn_label.config(text='Descriptions will not be adjusted. New COA cannot be generated without\n'
+                                           'checking descriptions first, unadjusted raw COA will be exported instead.',
+                                      fg='#8ace7e')
 
         self.disable_children(self.options_frame)
 
@@ -256,19 +239,19 @@ class DuplicateCorrection:
         if pref_on and pref_accept:
             self.imported_tb = self.main.prefixed_tb.copy()
         elif pref_on and not pref_accept:
-            self.warn_label.config(text='Prefixed Codes selected but not mapped/saved correctly.'
-                                        '\nPlease review Prefix Settings tab.', fg='#ff684c')
+            self.on_off_warn_label.config(text='Prefixed Codes selected but not mapped/saved correctly.'
+                                               '\nPlease review Prefix Settings tab.', fg='#ff684c')
             return
         else:
             self.imported_tb = self.main.raw_tb.copy()
-            self.warn_label.config(text='Raw TB Code descriptions checked for inconsistencies.', fg='#8ace7e')
+            self.on_off_warn_label.config(text='Raw TB Code descriptions checked for inconsistencies.', fg='#8ace7e')
         # endregion
 
         # region 3) Create another dataframe copy for editing down to codes with multiple descriptions
         multiple_desc = self.imported_tb.copy()
         multiple_desc['Desc.'] = multiple_desc['Desc.'].astype(str)  # NaN's > nan's, needed for filtering by uniques
         # Trim descriptions if selected
-        if self.trim.get() == 1:
+        if self.trim_var.get() == 1:
             multiple_desc['Desc.'] = multiple_desc['Desc.'].str.strip()
         # Adjust descriptions to upper or lower case if selected
         if self.case_var.get() == 1:
@@ -308,24 +291,25 @@ class DuplicateCorrection:
             self.main.desc_accepted = True
             self.imported_tb['Desc. New'] = self.imported_tb['Desc.']
             self.main.final_tb = self.imported_tb
-            self.warn_label.config(text='No inconsistent descriptions found. Proceed to COA Mapping Tab.',
-                                   fg='#8ace7e')
+            self.on_off_warn_label.config(text='No inconsistent descriptions found. Proceed to COA Mapping Tab.',
+                                          fg='#8ace7e')
 
             # Disable GUI
-            self.disable_children(self.auto_map_frame)
+            self.disable_children(self.map_frame)
             self.disable_children(self.can_frame)
-            self.disable_children(self.replace_desc_frame)
-            self.disable_children(self.output_comment_frame)
+            self.disable_children(self.save_frame)
+            self.disable_children(self.output_frame)
         # 8.2) Display list of inconsistent descriptions if below GUI display limits
         elif int(multiple_desc[[code_field]].nunique()) <= 300:
             self.dupe_limit = False
-            self.warn_label.config(text=str(int(multiple_desc[[code_field]].nunique())) +
-                                        ' inconsistent descriptions found, please select mappings.', fg='#ffda66')
+            self.on_off_warn_label.config(text=str(int(multiple_desc[[code_field]].nunique())) +
+                                               ' inconsistent descriptions found, please select mappings.',
+                                          fg='#ffda66')
             # enable gui due to adjustments needed?
-            self.enable_children(self.auto_map_frame)
+            self.enable_children(self.map_frame)
             self.enable_children(self.can_frame)
-            self.enable_children(self.replace_desc_frame)
-            self.enable_children(self.output_comment_frame)
+            self.enable_children(self.save_frame)
+            self.enable_children(self.output_frame)
 
             # Convert duplicates df into list of lists, first element code, then list of desc. option to add to GUI
             dupes_list = multiple_desc.groupby(code_field)['Desc.'].apply(lambda desc: [desc.name, *desc]).tolist()
@@ -343,15 +327,15 @@ class DuplicateCorrection:
         # 8.3) If descriptions exceed GUI display limit, update warning that only automapping is available
         else:
             self.dupe_limit = True
-            self.warn_label.config(text=str(int(multiple_desc[[code_field]].nunique())) +
-                                        ' inconsistent descriptions found, exceeds display limits.'
-                                        '\nPlease refer to Auto Map to correct duplicates.', fg='#ffda66')
+            self.on_off_warn_label.config(text=str(int(multiple_desc[[code_field]].nunique())) +
+                                               ' inconsistent descriptions found, exceeds display limits.'
+                                               '\nPlease refer to Auto Map to correct duplicates.', fg='#ffda66')
 
             # enable gui due to adjustments needed?
-            self.enable_children(self.auto_map_frame)
+            self.enable_children(self.map_frame)
             self.enable_children(self.can_frame)
-            self.enable_children(self.replace_desc_frame)
-            self.enable_children(self.output_comment_frame)
+            self.enable_children(self.save_frame)
+            self.enable_children(self.output_frame)
 
         # endregion
 
@@ -392,7 +376,7 @@ class DuplicateCorrection:
                         # Convert to list
                         priority_map = priority_map['Desc.'].astype(str).tolist()
                         # Filter for either longest string or first instance listed based on option selections
-                        if self.str_len_var.get() == 1:
+                        if self.map_var.get() == 1:
                             desc_mapping = priority_map[0]
                         else:
                             desc_mapping = max(priority_map, key=len)
@@ -414,7 +398,7 @@ class DuplicateCorrection:
 
             # 3.3) Filter for either longest string or first instance listed based on option selections
             mappings['String len'] = mappings['Desc.'].str.len()
-            if self.str_len_var.get() == 1:
+            if self.map_var.get() == 1:
                 mappings = mappings.sort_values(by=['Filter Column', code_field, 'String len', 'Desc.'],
                                                 ascending=[True, True, False, True], axis=0)
             else:
@@ -455,7 +439,7 @@ class DuplicateCorrection:
     # endregion
 
     # region 4.0 - Save Descriptions
-    def map_descriptions(self):
+    def map_desc(self):
         # region 1) Reset final TB, error flags and set code field based on prefix settings
         self.main.final_tb = pd.DataFrame()
         error_flag = False
@@ -505,7 +489,8 @@ class DuplicateCorrection:
         # region 3) Save descriptions if no GUI was generated
         else:
             # 3.1) Join new description to TB data on account code
-            tb_new_desc = pd.merge(self.imported_tb, self.desc_mappings, on=code_field, how='left', suffixes=('', ' New'))
+            tb_new_desc = pd.merge(self.imported_tb, self.desc_mappings, on=code_field, how='left',
+                                   suffixes=('', ' New'))
 
             # 3.2) Fill new description field from original mappings, updating formatting if selected
             if self.case_var.get() == 1:

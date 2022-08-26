@@ -30,8 +30,7 @@ class FileSelect:
         self.fp_button = tk.Button(self.fp_frame, text='Open:', command=self.directory_path, height=2)
         self.fp_button.grid(row=0, column=0, sticky='W')
         # Directory Display Label
-        self.fp_text = tk.StringVar(value='Select Import Directory')
-        self.fp_label = tk.Label(self.fp_frame, textvariable=self.fp_text, anchor='w')
+        self.fp_label = tk.Label(self.fp_frame, text='Select Import Directory', anchor='w')
         self.fp_label.grid(row=0, column=1, sticky='W')
         # endregion
 
@@ -129,11 +128,9 @@ class FileSelect:
 
             # region 2) Sets GUI label to selected filepath, exits function if not selected
             if len(fp) != 0:
-                self.fp_text.set(str(fp))
-                self.fp_label.config(fg='#8ace7e')
+                self.fp_label.config(text=str(fp), fg='#8ace7e')
             else:
-                self.fp_text.set('ERROR: No Filepath was selected')
-                self.fp_label.config(fg='#ff684c')
+                self.fp_label.config(text='ERROR: No Filepath was selected', fg='#ff684c')
                 for button in self.head_list:
                     button['state'] = 'disable'
                 return
@@ -142,8 +139,9 @@ class FileSelect:
             # region 3) Find .xlsm files in folder , exits function if none found
             tb_files = [file for file in os.listdir(fp) if file.endswith('.xlsm') and not file.startswith('~$')]
             if len(tb_files) == 0:
-                self.fp_text.set('ERROR: Directory contains no .xlsm formatted files')
-                self.fp_label.config(fg='#ff684c')
+                # self.fp_text.set('ERROR: Directory contains no .xlsm formatted files')
+                # self.fp_label.config(fg='#ff684c')
+                self.fp_label.config(text='ERROR: Directory contains no .xlsm formatted files', fg='#ff684c')
                 for button in self.head_list:
                     button['state'] = 'disable'
                 return
@@ -184,61 +182,60 @@ class FileSelect:
 
         except Exception as error:
             # region Filepath error handling exception
-            self.fp_text.set('ERROR: ' + str(error))
-            self.fp_label.config(fg='#ff684c')
+            self.fp_label.config(text='ERROR: ' + str(error), fg='#ff684c')
             for button in self.head_list:
                 button['state'] = 'disable'
             # endregion
 
     def file_import_toggle(self, event):
-        # 1) Get the Y axis position of the widget selected
+        # 1) Get Y axis position of widget selected, search for unselected check buttons on Y axis
         row = event.widget.grid_info()['row']
-
-        # 2) Search for unselected check buttons on Y axis grid position
         all_checks_on = True
         for x in self.import_selections[row][1:]:
             if x[1].get() == 0:
                 all_checks_on = False
                 break
 
-        # 3) map checks on/off based on all_checks_on variable
+        # 2) map checks on/off based on all_checks_on variable
         for x in self.import_selections[row][1:]:
             x[1].set(0) if all_checks_on else x[1].set(1)
 
     def period_import_toggle(self, event):
-        # 1) Get the X axis position of the widget selected
+        # 1) Get X axis position of widget selected, search for unselected check buttons on X axis
         col = event.widget.grid_info()['column']
-
-        # 2) Search for unselected check buttons on X axis grid position
         all_checks_on = True
         for x in self.import_selections:
             if x[col][1].get() == 0:
                 all_checks_on = False
                 break
 
-        # 3) map checks on/off based on all_checks_on variable
+        # 2) map checks on/off based on all_checks_on variable
         for x in self.import_selections:
             x[col][1].set(0) if all_checks_on else x[col][1].set(1)
     # endregion
 
     # region File import function
     def load_files(self):
-        # region 1) Reset dataframes and variables
+        # region 1) Reset all dataframes and variables
         self.main.raw_tb = pd.DataFrame()
         self.main.raw_coa = pd.DataFrame()
         self.main.raw_company = pd.DataFrame()
         raw_tb = pd.DataFrame()
         raw_coa = pd.DataFrame()
         no_viable_tabs = True
+
         # option_selection
         self.main.prefix_on = False
         self.main.prefix_accepted = False
+
         # duplicate_correction
         self.main.desc_on = False
         self.main.desc_accepted = False
+
         # coa_mapping
         self.main.coa_accepted = False
-        # Remove any balloon popups to prevent erroneous looping in winfo_children()
+
+        # Remove any balloon popups to prevent erroneous looping later in the function
         for child in self.data_can_sub_frame.winfo_children():
             widget_type = child.winfo_class()
             if widget_type == 'TixBalloon':
@@ -255,7 +252,6 @@ class FileSelect:
             # region 4) Map each tkinter element to a variable for ease of script readability
             file_name = row[0]['text']
             period_selections = {row[1]: 'Prior TB', row[2]: 'Opening TB', row[3]: 'Closing TB'}
-            row[4]: tk.Checkbutton
             coa = row[4]
             # endregion
 
@@ -268,7 +264,7 @@ class FileSelect:
                 # endregion
 
                 # region 6) Load each TB period dependent on selections
-                period: tk.Checkbutton()  # Must explicitly declare type to prevent pycharm attribute errors
+                period: tk.Checkbutton  # Must explicitly declare type to prevent attribute errors
                 for period, header in zip(period_selections, headers):
                     selection = str(period.cget('variable'))  # Used to direct access checkbutton var selection
                     if int(period.getvar(selection)) == 1:
@@ -279,13 +275,12 @@ class FileSelect:
                             if col_list != header:
                                 period.config(bg='#ff684c')
                                 error_message = 'Tab has non-standard headers for advantage template.'
-                                error_popup = tix.Balloon(self.data_can_sub_frame)
-                                error_popup.config(bg='#ffda66')
+                                error_popup = tix.Balloon(self.data_can_sub_frame, bg='#ffda66')
                                 error_popup.bind_widget(period, balloonmsg=error_message)
                                 continue
                             # endregion
 
-                            # region 6.2) NOTE: Load Tab (Adjust, loads to check headers multiple times)
+                            # region 6.2) Load Tab (NOTE: Adjust, loads to check headers twice)
                             tab = pd.read_excel(data, sheet_name=period_selections[period], usecols='A:D',
                                                 names=['Company', 'Code', 'Desc.', 'Amount'],
                                                 converters={'Company': str, 'Code': str, 'Desc.': str, 'Amount': float})
@@ -317,8 +312,7 @@ class FileSelect:
 
                             # region 6.5) Add Balloon Note with any errors found to GUI, update colour scheme
                             error_notes_list = '\n'.join(error_notes)
-                            error_popup = tix.Balloon(self.data_can_sub_frame)
-                            error_popup.config(bg='#ffda66')
+                            error_popup = tix.Balloon(self.data_can_sub_frame, bg='#ffda66')
                             error_popup.bind_widget(period, balloonmsg=error_notes_list)
                             if major_flag:
                                 period.config(bg='#ff684c')
@@ -338,8 +332,7 @@ class FileSelect:
                             # Turns entire file row red and flags with exception error
                             period.config(bg='#ff684c')
                             error_message = str(error)
-                            error_popup = tix.Balloon(self.data_can_sub_frame)
-                            error_popup.config(bg='#ffda66')
+                            error_popup = tix.Balloon(self.data_can_sub_frame, bg='#ffda66')
                             error_popup.bind_widget(period, balloonmsg=error_message)
                     else:
                         # Sets tab checkbutton to default colour if not imported
@@ -357,8 +350,7 @@ class FileSelect:
                         if col_list != ['CoA Account Code', 'CoA Account Name', 'BDO FSA']:
                             coa.config(bg='#ff684c')
                             error_message = 'Tab has non-standard headers for advantage template.'
-                            error_popup = tix.Balloon(self.data_can_sub_frame)
-                            error_popup.config(bg='#ffda66')
+                            error_popup = tix.Balloon(self.data_can_sub_frame, bg='#ffda66')
                             error_popup.bind_widget(coa, balloonmsg=error_message)
                             continue
                         # endregion
@@ -405,9 +397,7 @@ class FileSelect:
                         # endregion
 
                     except Exception as error:
-                        # Must explicitly declare type to prevent attribute errors
-                        coa: tk.Checkbutton()
-                        # Turns entire file row #ff684c and flags with error
+                        # Turns entire file row red and flags with error
                         coa.config(bg='#ff684c')
                         error_message = str(error)
                         error_popup = tix.Balloon(self.data_can_sub_frame)
@@ -421,38 +411,38 @@ class FileSelect:
             except Exception as error:
                 for period in period_selections:
                     # region Turns entire file row red and flags with error
-                    period: tk.Checkbutton  # Must explicitly declare type to prevent attribute errors
                     period.config(bg='#ff684c')
                     error_message = str(error)
-                    error_popup = tix.Balloon(self.data_can_sub_frame)
-                    error_popup.config(bg='#ffda66')
+                    error_popup = tix.Balloon(self.data_can_sub_frame, bg='#ffda66')
                     error_popup.bind_widget(period, balloonmsg=error_message)
                     # endregion
         # endregion
 
         # region 8) Check if any data was imported from PY, OP, CL or COA tabs, adds to main dataframes
         if not no_viable_tabs and not raw_tb.empty:
-            # 8.1) file_no gets total unique files imported for both TB's & COA's
-            file_no = pd.concat([raw_tb['Filename'], raw_coa['Filename']])
-            # raw_company gets total unique companies imported from TB's
-            raw_company = list(dict.fromkeys(raw_tb['Company']))
+            # region 8.1) Assign local variables to root variables to be used in other tabs
+            self.main.raw_tb = raw_tb
+            self.main.raw_coa = raw_coa
+            self.main.raw_company = list(dict.fromkeys(raw_tb['Company']))  # Unique companies variable
+            # endregion
 
-            # 8.2) Updates GUI with import results, assigns local TB data to root variables
+            # region 8.2) Update import label with number of files & no. of TB & COA lines
+            file_no = pd.concat([raw_tb['Filename'], raw_coa['Filename']])  # Unique Files variables
             self.load_label.config(text='TB data has been imported for ' + str(file_no.nunique()) + ' files, totalling '
                                         + str(len(raw_tb)) + ' TB lines, and ' + str(len(raw_coa)) +
                                         ' COA lines. Please review any errors flagged.', fg='#8ace7e')
-            self.main.raw_tb = raw_tb
-            self.main.raw_coa = raw_coa
-            self.main.raw_company = raw_company
+            # endregion
 
-            # 8.3) Enables the Prefix & duplicate description tabs
+            # region 8.3) Enables the Prefix & duplicate description GUI tabs
             for tab in range(1, 3):
                 self.master.tab(tab, state="normal")
+            # endregion
         else:
             self.load_label.config(text='ERROR: No viable data found in PY, OP, or CL tabs of any files, '
                                         'or no TB periods were selected for import.', fg='#ff684c')
             for tab in range(1, 4):
                 self.master.tab(tab, state="disabled")
+
         # endregion
 
         # region 9) Prints imported datasets

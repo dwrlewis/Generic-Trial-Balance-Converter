@@ -95,40 +95,40 @@ class DataExport:
         # endregion
 
         # region ================== 1.0 - Check Data & Options ==================
-        self.export_opt_frame = tk.Frame(self.top_frame)
-        self.export_opt_frame.grid(row=0, rowspan=2, column=0, sticky='NSEW')
+        self.check_frame = tk.Frame(self.top_frame)
+        self.check_frame.grid(row=0, rowspan=2, column=0, sticky='NSEW')
 
-        self.check_data = tk.Button(self.export_opt_frame, text='Review Data:', command=self.check_data, height=2)
+        self.check_data = tk.Button(self.check_frame, text='Review Data:', command=self.check_data, height=2)
         self.check_data.grid(column=0, sticky='EW')
 
         # TB Export Options
-        tk.Label(self.export_opt_frame, text='Trial Balance Exports:', pady=6).grid(column=0, sticky='W')
+        tk.Label(self.check_frame, text='Trial Balance Exports:', pady=6).grid(column=0, sticky='W')
         self.tb_opt_list = []
         self.tb_opt_var_list = []
         for y, tb in enumerate(['Adjusted TB', 'Raw TB', 'Detailed Meta TB']):
             tb_var = tk.IntVar(value=0)
-            tb_check = tk.Checkbutton(self.export_opt_frame, text=tb, variable=tb_var, state='disabled')
+            tb_check = tk.Checkbutton(self.check_frame, text=tb, variable=tb_var, state='disabled')
             tb_check.grid(column=0, sticky='W')
             self.tb_opt_list.append(tb_check)
             self.tb_opt_var_list.append(tb_var)
 
         # COA Export Options
-        tk.Label(self.export_opt_frame, text='COA Exports:', pady=6).grid(column=0, sticky='W')
+        tk.Label(self.check_frame, text='COA Exports:', pady=6).grid(column=0, sticky='W')
         self.coa_opt_list = []
         self.coa_opt_var_list = []
-        for y, tb in enumerate(['Adjusted TB', 'Raw TB', 'Detailed Meta TB']):
+        for y, tb in enumerate(['Adjusted COA', 'Raw COA', 'Detailed Meta COA']):
             coa_var = tk.IntVar(value=0)
-            coa_check = tk.Checkbutton(self.export_opt_frame, text=tb, variable=coa_var, state='disabled')
+            coa_check = tk.Checkbutton(self.check_frame, text=tb, variable=coa_var, state='disabled')
             coa_check.grid(column=0, sticky='W')
             self.coa_opt_list.append(coa_check)
             self.coa_opt_var_list.append(coa_var)
 
         # COA Filter unmapped FSA's option
-        self.coa_label = tk.Label(self.export_opt_frame, text='Options:', pady=6)
+        self.coa_label = tk.Label(self.check_frame, text='Options:', pady=6)
         self.coa_label.grid(column=0, sticky='W')
 
         self.coa_unmap_var = tk.IntVar(value=0)
-        self.coa_unmap_check = tk.Checkbutton(self.export_opt_frame, text='Drop blank FSAs?',
+        self.coa_unmap_check = tk.Checkbutton(self.check_frame, text='Drop blank FSAs?',
                                               variable=self.coa_unmap_var, state='disabled')
         self.coa_unmap_check.grid(column=0, sticky='W')
         # endregion
@@ -251,7 +251,7 @@ class DataExport:
         # region 1) Clear all TB Period widgets & disable all export checks
         self.reset(self.tb_dqi_frame)
         self.reset(self.coa_dqi_frame)
-        for child in self.export_opt_frame.winfo_children():
+        for child in self.check_frame.winfo_children():
             if child.winfo_class() == 'Checkbutton':
                 child: tk.Checkbutton  # Prevents false flag pycharm error flags
                 child.config(fg='#FFFFFF', state='disabled')
