@@ -8,6 +8,8 @@ class DataExport:
     def __init__(self, master, main):
         self.master = master
         self.main = main
+
+        # region Variables
         self.fsa_list = ['A1-Intangibles',
                          'A1A-Intangibles - Mining',
                          'A1B-Intangibles - Oil and gas',
@@ -80,6 +82,7 @@ class DataExport:
                          'YY-Derivatives',
                          'CF-Cash Flow Statement'
                          ]
+        # endregion
 
         # region ================== 0.0 - Top Frame ==================
         self.top_frame = tk.Frame(master)
@@ -130,7 +133,7 @@ class DataExport:
         self.coa_unmap_check.grid(column=0, sticky='W')
         # endregion
 
-        # region ================== 2.1 - TB Data Check ==================
+        # region ================== 2.0 - TB Data Check ==================
         self.tb_dqi_frame = tk.Frame(self.top_frame)
         self.tb_dqi_frame.grid(row=0, column=1, sticky='NSEW')
         for x in range(1, 3):
@@ -178,7 +181,7 @@ class DataExport:
 
         # endregion
 
-        # region ================== 2.2 - COA Data Check ==================
+        # region ================== 3.0 - COA Data Check ==================
         self.coa_dqi_frame = tk.Frame(self.top_frame)
         self.coa_dqi_frame.grid(row=1, column=1, sticky='NSEW')
 
@@ -242,21 +245,10 @@ class DataExport:
         self.export_button.grid(row=0, column=1, sticky='EW')
         # endregion
 
-        for x in self.tb_opt_var_list:
-            print(x.get())
-
-    def reset(self, parent):
-        # 1) loop through each child of widget except for enable/disable frame
-        for child in parent.winfo_children():
-            widget_type = child.winfo_class()
-            if widget_type == 'Entry':
-                child.delete(0, tk.END)
-            else:
-                self.reset(child)
-
+    # region 1.0 - Check Data & Reset Values
     def check_data(self):
 
-        # region 0 - Clear all TB Period widgets & disable all export checks
+        # region 1) Clear all TB Period widgets & disable all export checks
         self.reset(self.tb_dqi_frame)
         self.reset(self.coa_dqi_frame)
         for child in self.export_opt_frame.winfo_children():
@@ -273,47 +265,40 @@ class DataExport:
         coa_accept = self.main.coa_accepted
         # endregion
 
-        # region 1 - Raw TB Check
-        # 1) Get Raw TB & Widgets to insert
+        # region 2) Raw TB Check for line total & unique companies by period, update GUI
         raw_tb = self.main.raw_tb
-
         if len(raw_tb) != 0:
-            # 2) Populate entries split by period
+            # Populate entries split by period
             for period, widget in zip(['Prior TB', 'Opening TB', 'Closing TB'], self.raw_tb_entries[:3]):
-                # 2.1) Populate lines for each period
+                # Lines for each period
                 lines = raw_tb[raw_tb['TB Period'] == period]
                 widget[0].insert(0, str(len(lines)))
-
-                # 2.2) Populate companies for each period
+                # Companies for each period
                 companies = lines['Company'].unique().tolist()
                 widget[1].insert(0, str(len(companies)))
-
-            # 3) Update Raw data totals widget
             self.raw_tb_entries[3][0].insert(0, str(len(raw_tb)))
             self.raw_tb_entries[3][1].insert(0, str(len(set(raw_tb['Company'].unique().tolist()))))
             self.tb_opt_list[1].config(state='normal', fg='#8ace7e')
         else:
-            # Exception if empty TB data
             for widget in self.raw_tb_entries:
                 widget[0].insert(0, 'NULL')
                 widget[1].insert(0, 'NULL')
         # endregion
 
-        # region 2 - Raw COA Check
+        # region 3) Raw COA Check for line total, no. of irregular mappings, and blank mappings, update GUI
         raw_coa = self.main.raw_coa
         coa_lines, coa_irregular, coa_blank = self.raw_coa_entries
         if len(raw_coa) != 0:
             coa_lines.insert(0, str(len(raw_coa)))
             coa_irregular.insert(0, str(len(raw_coa[~raw_coa['FSA'].isin(self.fsa_list)].dropna(subset=['FSA']))))
             coa_blank.insert(0, str(raw_coa['FSA'].isnull().sum()))
-            # coa_fsa.insert(0, str(len(raw_coa[~raw_coa['FSA'].isin(self.fsa_list)])))
             self.coa_opt_list[1].config(state='normal', fg='#8ace7e')
         else:
             for widget in self.raw_coa_entries:
                 widget.insert(0, 'NULL')
         # endregion
 
-        # region 3 - Settings Check
+        # region 4) Settings Check, prefix, description & coa GUI update
         adj_list = [[pref_on, pref_accept],
                     [desc_on, desc_accept],
                     [desc_on, coa_accept]]
@@ -325,8 +310,8 @@ class DataExport:
             widget.config(bg=desc_colour)
         # endregion
 
-        # region 4 - Adj TB Check
-        # 1) Assign TB based on settings
+        # region 5) Adj TB Check for line total & unique companies by period, update GUI
+        # Assign TB based on settings
         if desc_on and desc_accept:
             tb = self.main.final_tb.copy()
         elif pref_on and pref_accept:
@@ -334,7 +319,7 @@ class DataExport:
         else:
             tb = self.main.raw_tb.copy()
 
-        # 2) Update GUI for adjusted TB
+        # Update adjusted TB lines & unique companies GUI
         if len(tb) != 0:
             self.adj_lines_entry.insert(0, str(len(tb)))
             comp_field = 'Company New' if pref_on and pref_accept else 'Company'
@@ -346,15 +331,16 @@ class DataExport:
             self.adj_comp_entry.insert(0, 'NULL')
         # endregion
 
-        # region 5 - Adj COA Check
+        # region 6) Adj COA Check for line total, no. of irregular mappings, and blank mappings, update GUI
         if self.main.desc_on and self.main.desc_accepted:
             coa = self.main.final_coa.copy()
+            fsa_field = 'FSA Remap' if 'FSA Remap' in coa else 'FSA'
             lines, irregular, blank = self.adj_coa_entries
 
             if len(coa) != 0:
                 lines.insert(0, str(len(coa)))
-                blank.insert(0, str(coa['FSA New'].isnull().sum()))
-                irregular.insert(0, str(len(coa[~coa['FSA New'].isin(self.fsa_list)].dropna(subset=['FSA New']))))
+                blank.insert(0, str(coa[fsa_field].isnull().sum()))
+                irregular.insert(0, str(len(coa[~coa[fsa_field].isin(self.fsa_list)].dropna(subset=[fsa_field]))))
                 self.coa_opt_list[0].config(state='normal', fg='#8ace7e')
                 self.coa_opt_list[2].config(state='normal', fg='#8ace7e')
                 self.coa_unmap_check.config(state='normal', fg='#8ace7e')
@@ -366,12 +352,20 @@ class DataExport:
                 widget.insert(0, 'NULL')
         # endregion
 
+    def reset(self, parent):
+        for child in parent.winfo_children():
+            widget_type = child.winfo_class()
+            if widget_type == 'Entry':
+                child.delete(0, tk.END)
+            else:
+                self.reset(child)
+    # endregion
+
+    # region 4.0 - fp selection & data export
     def export_path(self):
         try:
-            # 1) Select filepath and update tkinter text with path
             fp = filedialog.askdirectory(initialdir='/', title='Select a directory')
-
-            # 2) Sets GUI label to selected filepath, exits function if not selected
+            # Sets GUI label to selected filepath, exits function if not selected
             if len(fp) != 0:
                 self.fp_text.set(str(fp))
                 self.export_button['state'] = 'normal'
@@ -383,135 +377,135 @@ class DataExport:
                 self.export_button['state'] = 'disable'
                 return
         # Filepath error handling exception
-        except os.error:
-            self.fp_text.set('ERROR: Invalid Directory')
+        except Exception as error:
+            self.fp_text.set('ERROR: ' + str(error))
             self.export_button['state'] = 'disable'
 
     def data_export(self):
-        # try:
-        with pd.ExcelWriter('Trial Balance Export.xlsx') as writer:
-            # region 0 - Variables & workbook Formatting
-            exports_check = False  # Variable to check if any data successfully exported
+        try:
+            with pd.ExcelWriter('Trial Balance Export.xlsx') as writer:
+                # region 0) Variables & workbook Formatting
+                exports_check = False  # Variable to check if any data successfully exported
 
-            pref_on = self.main.prefix_on
-            pref_accept = self.main.prefix_accepted
-            desc_on = self.main.desc_on
-            desc_accepted = self.main.desc_accepted
+                pref_on = self.main.prefix_on
+                pref_accept = self.main.prefix_accepted
+                desc_on = self.main.desc_on
+                desc_accepted = self.main.desc_accepted
 
-            # 2 digit numeric format
-            workbook = writer.book
-            numeric_format = workbook.add_format({'num_format': '0.00'})
+                # Format to export values in two digit numeric format
+                workbook = writer.book
+                numeric_format = workbook.add_format({'num_format': '0.00'})
+                # endregion
 
+                # region 1) Adjusted TB Export
+                if self.tb_opt_var_list[0].get() == 1:
+                    print('adj. TB selected')
 
-            # endregion
+                    if desc_on and desc_accepted:
+                        tb = self.main.final_tb.copy()
+                    elif pref_on and pref_accept:
+                        tb = self.main.prefixed_tb.copy()
+                    else:
+                        self.fp_text.set('ERROR: Adj. TB not exported, neither prefix or desc. corrections performed')
+                        self.fp_label.config(fg='#ff684c')
+                        return
 
-            # region 1 - Adjusted TB Export
-            if self.tb_opt_var_list[0].get() == 1:
-                print('adj. TB selected')
+                    company_field = 'Company New' if 'Company New' in tb.columns else 'Company'
+                    code_field = 'Pref. Code' if 'Pref. Code' in tb.columns else 'Code'
+                    desc_field = 'Desc. New' if 'Desc. New' in tb.columns else 'Desc.'
+                    fields = ['TB Period', company_field, code_field, desc_field, 'Amount']
+                    tb = tb[fields]
 
-                if desc_on and desc_accepted:
-                    tb = self.main.final_tb.copy()
-                elif pref_on and pref_accept:
-                    tb = self.main.prefixed_tb.copy()
+                    for period in ['Prior TB', 'Opening TB', 'Closing TB']:
+                        tb_period = tb[tb['TB Period'] == period]
+                        tb_period = tb_period.drop(['TB Period'], axis=1)
+                        tb_period.to_excel(writer, sheet_name='Adj ' + period, index=False)
+
+                        worksheet = writer.sheets['Adj ' + period]
+                        worksheet.set_column('D:D', None, numeric_format)
+                    exports_check = True
+                # endregion
+
+                # region 2) Adjusted COA
+                if self.coa_opt_var_list[0].get() == 1:
+                    print('adj. COA selected')
+
+                    coa = self.main.final_coa.copy()
+
+                    code_field = 'Pref. Code' if 'Pref. Code' in tb.columns else 'Code'
+                    fsa_field = 'FSA Remap' if 'FSA Remap' in coa else 'FSA'
+
+                    coa.sort_values(by=[fsa_field], na_position='last', inplace=True)
+                    fields = [code_field, 'Desc. New', fsa_field]
+
+                    coa = coa[fields]
+                    if self.coa_unmap_var.get() == 1:
+                        coa.dropna(subset=[fsa_field], inplace=True)
+
+                    coa.to_excel(writer, sheet_name='Adj COA', index=False)
+                    exports_check = True
+                # endregion
+
+                # region 3) Raw TB Export
+                if self.tb_opt_var_list[1].get() == 1:
+                    print('Raw TB selected')
+
+                    tb = self.main.raw_tb
+                    for period in ['Prior TB', 'Opening TB', 'Closing TB']:
+                        tb_period = tb[tb['TB Period'] == period]
+                        tb_period = tb_period.drop(['TB Period', 'Filename'], axis=1)
+                        tb_period.to_excel(writer, sheet_name='Raw ' + period, index=False)
+
+                        worksheet = writer.sheets['Raw ' + period]
+                        worksheet.set_column('D:D', None, numeric_format)
+                    exports_check = True
+                # endregion
+
+                # region 4) Raw COA Export
+                if self.coa_opt_var_list[1].get() == 1:
+                    print('Raw COA selected')
+
+                    coa = self.main.raw_coa
+                    coa = coa.drop(['Filename'], axis=1)
+                    coa.to_excel(writer, sheet_name='Raw COA', index=False)
+                    exports_check = True
+                # endregion
+
+                # region 5) Detailed TB Export
+                if self.tb_opt_var_list[2].get() == 1:
+                    print('Det. TB selected')
+
+                    if desc_on and desc_accepted:
+                        tb = self.main.final_tb.copy()
+                    elif pref_on and pref_accept:
+                        tb = self.main.prefixed_tb.copy()
+                    else:
+                        self.fp_text.set('ERROR: Det. TB not exported, neither prefix or desc. corrections performed')
+                        self.fp_label.config(fg='#ff684c')
+                        return
+
+                    tb.to_excel(writer, sheet_name='Det. TB', index=False)
+                    exports_check = True
+                # endregion
+
+                # region 6) Detailed TB Export
+                if self.coa_opt_var_list[2].get() == 1:
+                    print('Det. COA selected')
+
+                    coa = self.main.final_coa
+                    coa.to_excel(writer, sheet_name='Det. COA', index=False)
+                    exports_check = True
+                # endregion
+
+                # region 7) GUI update if no selections made or data exported successfully
+                if exports_check:
+                    self.fp_text.set('Selected Data has been exported to folder')
+                    self.fp_label.config(fg='#8ace7e')
                 else:
-                    self.fp_text.set('ERROR: Adj. TB not exported, neither prefix or desc. corrections performed')
+                    self.fp_text.set('ERROR: No selections were made')
                     self.fp_label.config(fg='#ff684c')
-                    return
-
-                company_field = 'Company New' if 'Company New' in tb.columns else 'Company'
-                code_field = 'Pref. Code' if 'Pref. Code' in tb.columns else 'Code'
-                desc_field = 'Desc. New' if 'Desc. New' in tb.columns else 'Desc.'
-                fields = ['TB Period', company_field, code_field, desc_field, 'Amount']
-                tb = tb[fields]
-
-                for period in ['Prior TB', 'Opening TB', 'Closing TB']:
-                    tb_period = tb[tb['TB Period'] == period]
-                    tb_period = tb_period.drop(['TB Period'], axis=1)
-                    tb_period.to_excel(writer, sheet_name='Adj ' + period, index=False)
-
-                    worksheet = writer.sheets['Adj ' + period]
-                    worksheet.set_column('D:D', None, numeric_format)
-                exports_check = True
-            # endregion
-
-            # region 2 - Adjusted COA
-            if self.coa_opt_var_list[0].get() == 1:
-                print('adj. COA selected')
-
-                coa = self.main.final_coa.copy()
-
-                code_field = 'Pref. Code' if 'Pref. Code' in tb.columns else 'Code'
-                coa.sort_values(by=['FSA New'], na_position='last', inplace=True)
-                fields = [code_field, 'Desc. New', 'FSA New']
-
-                coa = coa[fields]
-                if self.coa_unmap_var.get() == 1:
-                    coa.dropna(subset=['FSA New'], inplace=True)
-
-                coa.to_excel(writer, sheet_name='Adj COA', index=False)
-                exports_check = True
-            # endregion
-
-            # region 3 - Raw TB Export
-            if self.tb_opt_var_list[1].get() == 1:
-                print('Raw TB selected')
-
-                tb = self.main.raw_tb
-                for period in ['Prior TB', 'Opening TB', 'Closing TB']:
-                    tb_period = tb[tb['TB Period'] == period]
-                    tb_period = tb_period.drop(['TB Period', 'Filename'], axis=1)
-                    tb_period.to_excel(writer, sheet_name='Raw ' + period, index=False)
-
-                    worksheet = writer.sheets['Raw ' + period]
-                    worksheet.set_column('D:D', None, numeric_format)
-                exports_check = True
-            # endregion
-
-            # region 4 - Raw COA Export
-            if self.coa_opt_var_list[1].get() == 1:
-                print('Raw COA selected')
-
-                coa = self.main.raw_coa
-                coa = coa.drop(['Filename'], axis=1)
-                coa.to_excel(writer, sheet_name='Raw COA', index=False)
-                exports_check = True
-            # endregion
-
-            # region 5 - Detailed TB Export
-            if self.tb_opt_var_list[2].get() == 1:
-                print('Det. TB selected')
-
-                if desc_on and desc_accepted:
-                    tb = self.main.final_tb.copy()
-                elif pref_on and pref_accept:
-                    tb = self.main.prefixed_tb.copy()
-                else:
-                    self.fp_text.set('ERROR: Det. TB not exported, neither prefix or desc. corrections performed')
-                    self.fp_label.config(fg='#ff684c')
-                    return
-
-                tb.to_excel(writer, sheet_name='Det. TB', index=False)
-                exports_check = True
-            # endregion
-
-            # region 6 - Detailed TB Export
-            if self.coa_opt_var_list[2].get() == 1:
-                print('Det. COA selected')
-
-                coa = self.main.final_coa
-                coa.to_excel(writer, sheet_name='Det. COA', index=False)
-                exports_check = True
-            # endregion
-
-            # region 7 - GUI update if no selections made or data exported successfully
-            if exports_check:
-                self.fp_text.set('Selected Data has been exported to folder')
-                self.fp_label.config(fg='#8ace7e')
-            else:
-                self.fp_text.set('ERROR: No selections were made')
-                self.fp_label.config(fg='#ff684c')
-            # endregion
-
-        # except Exception as error:
-        #     self.fp_text.set('ERROR: ' + str(error))
-        #     self.fp_label.config(fg='#ff684c')
+                # endregion
+        except Exception as error:
+            self.fp_text.set('ERROR: ' + str(error))
+            self.fp_label.config(fg='#ff684c')
+    # endregion

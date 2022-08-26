@@ -8,26 +8,23 @@ from duplicate_correction import DuplicateCorrection
 from coa_mapping import CoaConfigure
 from data_export import DataExport
 
-# Pandas Print Display Options
+# region Pandas Display Options
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-pd.set_option('display.max_colwidth', None)
+pd.set_option('display.max_colwidth', 15)
 pd.set_option('display.width', None)
+# endregion
 
 
 class MainFrame:
     def __init__(self, master):
-        # Master Options
+        # region Master Options
         master.title('Trial Balance Batch Converter')
         master.geometry('900x700')
         master.minsize(900, 700)
+        # endregion
 
-        # GUI Tabs
-        master_tab = ttk.Notebook(master)
-        master_tab.grid(row=0, column=0, sticky='nsew')
-
-        # ==== Data Variables ======
-
+        # region Master Variables
         # file_selection variables
         self.raw_tb = pd.DataFrame()
         self.raw_coa = pd.DataFrame()
@@ -46,15 +43,19 @@ class MainFrame:
         # coa_Mappings
         self.final_coa = pd.DataFrame()
         self.coa_accepted = False
+        # endregion
 
-        # Sub-Classes
+        # region Classes
+        master_tab = ttk.Notebook(master)
+        master_tab.grid(row=0, column=0, sticky='nsew')
         self.file_select = FileSelect(master_tab, main=self)
         self.options_select = PrefixOptions(master_tab, main=self)
         self.duplicate_correction = DuplicateCorrection(master_tab, main=self)
         self.coa_mapping = CoaConfigure(master_tab, main=self)
         self.export = DataExport(master_tab, main=self)
 
-        self.colour(master)
+        self.colour(master)  # Adds Tkinter Theme
+        # endregion
 
     def colour(self, parent):
         # 1) loop through each child of widget except for enable/disable frame
@@ -96,13 +97,14 @@ class MainFrame:
 
 if __name__ == '__main__':
     root = tix.Tk()
+
+    # Add Weights to GUI
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
 
+    # Add logo to GUI
     logo = tk.PhotoImage(file='bdo logo.png')
     root.iconphoto(False, logo)
 
     MainFrame(root)
-    # colour(root)
-
     root.mainloop()

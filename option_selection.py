@@ -8,76 +8,70 @@ class PrefixOptions:
     def __init__(self, master, main):
         self.master = master
         self.main = main
-        self.mapping_selections = pd.DataFrame()
-        self.widgets_State = 'disabled'
 
-        # region Tkinter GUI
-        # ================== 0.0 - Top Frame ==================
+        # region Variables
+        self.widgets_State = 'disabled'
+        # endregion
+
+        # region ================== 0.0 - Top Frame ==================
         self.top_frame = tk.Frame(master)
         self.top_frame.grid(row=0, column=0, sticky='NSEW')
-        self.master.add(self.top_frame, text='Prefix Settings')
         self.top_frame.columnconfigure(1, weight=1)
         self.top_frame.rowconfigure(1, weight=1)
-
+        self.master.add(self.top_frame, text='Prefix Settings')
         # self.master.tab(1, state="disabled")
+        # endregion
 
-        # ================== 1.0 - Prefix On/Off ==================
+        # region ================== 1.0 - Prefix On/Off ==================
         # Prefix on/off Frame
         self.on_off_frame = tk.Frame(self.top_frame)
         self.on_off_frame.grid(row=0, column=0, sticky='NSEW')
-
         for x in range(2):
             self.on_off_frame.columnconfigure(x, weight=1)
-
+        # Prefix on/off Label
         self.on_off_label = tk.Label(self.on_off_frame, text='Add Prefixes & Company Name Updates:')
         self.on_off_label.grid(row=0, column=0, columnspan=2, sticky='W', padx=5)
-
+        # Prefix ON Radiobutton
         self.pref_var = tk.IntVar(value=0)
         self.on_button = tk.Radiobutton(self.on_off_frame, text='Yes', variable=self.pref_var,
                                         value=1, command=self.enable_canvas)
         self.on_button.grid(row=1, column=0, padx=5)
-
+        # Prefix OFF Radiobutton
         self.off_button = tk.Radiobutton(self.on_off_frame, text='No', variable=self.pref_var,
                                          value=0, command=self.disable_canvas)
         self.off_button.grid(row=1, column=1, padx=5)
-
+        # Warning Frame & Label
         self.warning_frame = tk.Frame(self.top_frame)
         self.warning_frame.grid(row=0, column=1, sticky='NSEW')
-
-        self.warning_label = tk.Label(self.warning_frame,
-                                      text='Prefixes not selected. Codes & Companies will be exported as is.')
+        self.warning_label = tk.Label(self.warning_frame, text='Prefixes not selected. '
+                                                               'Codes & Companies will be exported as is.')
         self.warning_label.grid(row=0, column=0)
+        # endregion
 
-        # ================== 1.0 - Options Frame ==================
+        # region ================== 2.0 - Options Frame ==================
         self.options_frame = tk.Frame(self.top_frame)
         self.options_frame.grid(row=1, column=0, sticky='NSEW')
 
-        # ================== 2.0 - Company Options ==================
-
-        # Primary Frame
+        # region ================== 2.1 - Company Auto Mapping Options ==================
         self.map_frame = tk.Frame(self.options_frame)
         self.map_frame.grid(row=1, column=0, sticky='NSEW')
         self.map_frame.columnconfigure(0, weight=1)
 
+        # region 2.11 - Substring Selections
+        # Auto-Map Header Label
         self.map_label = tk.Label(self.map_frame, text='Auto-Map Options:')
         self.map_label.grid(row=0, column=0, columnspan=6, sticky='W', padx=5, pady=5)
-
-        # ================== 2.1 - Company auto-map ==================
-
-        # Substring Selections - Frame
+        # Substring Selections - Frame & Label
         self.strings_frame = tk.Frame(self.map_frame)
         self.strings_frame.grid(row=1, column=0, sticky='EW', padx=5, pady=5)
-        # Substring Selections - Label
         self.strings_label = tk.Label(self.strings_frame, text='Substring Selections:')
         self.strings_label.grid(row=0, column=0, columnspan=6,  sticky='W')
-
         # Substring Selections - "Map" Label
         self.string_map_label = tk.Label(self.strings_frame, text='Map')
         self.string_map_label.grid(row=1, column=0, sticky='W')
         # Substring Selections - Combobox
         self.string_select_list = ['All', 'Left', 'Right', 'Mid']
-        self.string_select_box = ttk.Combobox(self.strings_frame, values=self.string_select_list, width=5,
-                                              justify='center')
+        self.string_select_box = ttk.Combobox(self.strings_frame, values=self.string_select_list, width=5, justify='center')
         self.string_select_box.current(0)
         self.string_select_box.bind('<<ComboboxSelected>>', self.substring_range)
         self.string_select_box.grid(row=1, column=1, sticky='W', padx=5)
@@ -95,132 +89,129 @@ class PrefixOptions:
         # Substring Selections - "Characters" Label
         self.string_char_label = tk.Label(self.strings_frame, text='Characters')
         self.string_char_label.grid(row=1, column=5, sticky='W')
+        # endregion
 
-        # Case Formatting - Frame
+        # region 2.12 - Case Formatting
         self.case_frame = tk.Frame(self.map_frame)
         self.case_frame.grid(row=2, column=0, sticky='NSEW', padx=5, pady=5)
-
+        # Case Formatting - Label
         self.case_label = tk.Label(self.case_frame, text='Case Formatting:')
         self.case_label.grid(row=0, column=0, columnspan=4, sticky='W')
-
+        # Case Formatting - Selection Radio-button's
         self.case_var = tk.IntVar()
         for x, case in zip(range(4), ['No Change', 'Title', 'Upper', 'Lower']):
             self.case_selection = tk.Radiobutton(self.case_frame, text=case,
                                                  variable=self.case_var, value=x)
             self.case_selection.grid(row=1, column=x, sticky='W')
-
         # Case Formatting - Trim Checkbutton
         self.trim_var = tk.IntVar(value=1)
-        self.trim_check = tk.Checkbutton(self.case_frame, text='Trim Whitespace', variable=self.trim_var)
+        self.trim_check = tk.Checkbutton(self.case_frame, text='Trim Blanks', variable=self.trim_var)
         self.trim_check.grid(row=2, column=0, sticky='W')
-
-        # Automap Button
+        # Case Formatting - Automap Button
         self.map_button = tk.Button(self.case_frame, text='Automap Column(s)', command=self.automap_cols)
         self.map_button.grid(row=3, column=0, columnspan=4, sticky='EW')
-
-        # Clear Button
+        # Case Formatting - Clear Button
         self.clear_button = tk.Button(self.case_frame, text='Clear Column(s)', command=self.clear_cols)
         self.clear_button.grid(row=4, column=0, columnspan=4, sticky='EW')
+        # endregion
+        # endregion
 
-        # ================== 2.2 - Replace Text Format ==================
-        # On/Off Map Companies - Frame
+        # region ================== 2.2 - Custom String Replacement ==================
         self.replace_frame = tk.Frame(self.options_frame)
         self.replace_frame.grid(row=3, column=0, sticky='NSEW', padx=5, pady=5)
         self.replace_frame.columnconfigure(1, weight=1)
-
+        # Custom string - Header Label
         self.replace_header_label = tk.Label(self.replace_frame, text='Custom String Replacement:')
         self.replace_header_label.grid(row=0, column=0, columnspan=2, sticky='W')
-
+        # Custom string - "Replace" Label
         self.replace_label = tk.Label(self.replace_frame, text='Replace:')
         self.replace_label.grid(row=1, column=0, sticky='W')
-
+        # Custom string - "Replace" Entry
         self.replace_entry = tk.Entry(self.replace_frame)
         self.replace_entry.grid(row=1, column=1, sticky='EW', padx=5)
-
+        # Custom string - "With" Label
         self.with_label = tk.Label(self.replace_frame, text="With:")
         self.with_label.grid(row=2, column=0, sticky='W')
-
+        # Custom string - "With" Entry
         self.with_entry = tk.Entry(self.replace_frame)
         self.with_entry.grid(row=2, column=1, sticky='EW', padx=5)
-
+        # Custom string - Exact Case on/off
         self.exact_case_var = tk.IntVar(value=1)
         self.exact_case = tk.Checkbutton(self.replace_frame, text='Exact Case Only', variable=self.exact_case_var)
         self.exact_case.grid(row=3, column=0, columnspan=2, sticky='W')
-
-        self.replace_button = tk.Button(self.replace_frame, text='Replace Text',
-                                        command=self.replace_string)
+        # Custom string - Replace Button
+        self.replace_button = tk.Button(self.replace_frame, text='Replace Text', command=self.replace_string)
         self.replace_button.grid(row=4, column=0, columnspan=2, sticky='NSEW')
+        # endregion
 
-        # ================== 3.0 - Prefix/Suffix Formatting ==================
-        # Prefix/Suffix Frame
+        # region ================== 2.3 - Prefix/Suffix Formatting ==================
         self.suffix_prefix_frame = tk.Frame(self.options_frame)
         self.suffix_prefix_frame.grid(row=4, column=0, sticky='EW', padx=5)
         self.suffix_prefix_frame.columnconfigure(1, weight=1)
-
+        # Prefix/Suffix Format - Header Label
         self.suffix_prefix_header_label = tk.Label(self.suffix_prefix_frame, text='Adjust Code Format:')
         self.suffix_prefix_header_label.grid(row=0, column=0, sticky='W')
-
-        # 'Prefixes/Suffixes' - Label
+        # Prefix/Suffix Format - Label
         self.suffix_prefix_label = tk.Label(self.suffix_prefix_frame, text='Prefix or Suffix:')
         self.suffix_prefix_label.grid(row=1, column=0, sticky='W')
-        # 'Prefixes/Suffixes' - Button
+        # Prefix/Suffix Format - Button
         self.suffix_prefix_button = tk.Button(self.suffix_prefix_frame, text='Prefix', command=self.prefix_toggle)
         self.suffix_prefix_button.grid(row=1, column=1, sticky='EW', padx=5)
-
-        # 'Prefix/Suffix Divider' - Label
+        # Prefix/Suffix Format - Label
         self.prefix_divider = tk.StringVar(value='')
         self.divider_label = tk.Label(self.suffix_prefix_frame, text='Divider:')
         self.divider_label.grid(row=2, column=0, sticky='W')
-        # 'Prefix/Suffix Divider' - Entry
+        # Prefix/Suffix Format - Entry
         self.prefix_entry = tk.Entry(self.suffix_prefix_frame, textvariable=self.prefix_divider)
         self.prefix_entry.grid(row=2, column=1, sticky='EW', padx=5)
         self.prefix_entry.bind('<KeyRelease>', self.prefix_toggle_display)
-
-        # Display Example Code Format
+        # Display Example Prefixed Code Format
         self.code_format = tk.StringVar(value='PREFIX' + str(self.prefix_divider.get()) + 'CODE')
         self.prefix_format_example = tk.Label(self.suffix_prefix_frame, text='Code Format Example:')
         self.prefix_format_example.grid(row=3, column=0, sticky='W')
         self.display_format_label = tk.Label(self.suffix_prefix_frame, textvariable=self.code_format)
         self.display_format_label.grid(row=3, column=1, sticky='EW')
+        # endregion
 
-        # ================== 4.0 - Main Canvas Frame ==================
+        # endregion
+
+        # region ================== 3.0 - Main Canvas Frame ==================
         self.can_frame = tk.LabelFrame(self.top_frame)
         self.can_frame.grid(row=1, column=1, sticky='NSEW')
         for x in range(3):
             self.can_frame.columnconfigure(x, weight=1)
         self.can_frame.rowconfigure(1, weight=1)
-        # ================== 4.1 - Header Canvas Frame ==================
+
+        # region ================== 3.1 - Header Canvas Frame ==================
+
         # Header Canvas
         self.head_can = tk.Canvas(self.can_frame, height=23)
         self.head_can.grid(row=0, column=0, columnspan=3, sticky='EW')
         self.head_can.bind('<Configure>', self.frame_width)
         # Header Canvas Sub-Frame
         self.head_can_sub_frame = tk.Frame(self.head_can)
+        for x in range(3):
+            self.head_can_sub_frame.columnconfigure(x, weight=1)
         self.head_can_sub_frame.bind('<Configure>', self.config_frame)
         # Header canvas Window
         self.head_can_window = self.head_can.create_window(0, 0, anchor='nw', window=self.head_can_sub_frame)
 
-        # NEW BUTTON ON/OFF
-        for x in range(3):
-            self.head_can_sub_frame.columnconfigure(x, weight=1)
-
-        # 'Imported Comp.'
+        # Header Label - Imported Company
         self.import_label = tk.Label(self.head_can_sub_frame, text='Imported Comp.')
         self.import_label.grid(row=0, column=0, sticky='NSEW')
-
-        # 'New Comp. Mappings'
+        # Header Button - New Company Mappings
         self.comp_map_var = tk.IntVar(value=0)
         self.comp_map_button = tk.Button(self.head_can_sub_frame, text='New Comp. Mappings',
                                          command=lambda: self.button_on_off(self.comp_map_button, self.comp_map_var))
         self.comp_map_button.grid(row=0, column=1, sticky='NSEW')
-
-        # 'New Comp. Mappings'
+        # Header Button - Prefix Mappings
         self.pref_map_var = tk.IntVar(value=0)
         self.pref_map_button = tk.Button(self.head_can_sub_frame, text='Prefix/Suffix',
                                          command=lambda: self.button_on_off(self.pref_map_button, self.pref_map_var))
         self.pref_map_button.grid(row=0, column=2, sticky='NSEW')
+        # endregion
 
-        # ================== 4.2 - Data Canvas Frame ==================
+        # region ================== 3.2 - Data Canvas Frame ==================
         self.data_can = tk.Canvas(self.can_frame, bg='#BDCDFF')
         self.data_can.grid(row=1, column=0, columnspan=5, sticky='NSEW')
         self.data_can.bind('<Configure>', self.frame_width)
@@ -235,23 +226,23 @@ class PrefixOptions:
         # Scrollbar
         self.data_can_scroll = tk.Scrollbar(self.can_frame, orient="vertical", command=self.data_can.yview)
         self.data_can_scroll.grid(row=1, column=5, sticky='NS')
+        # endregion
 
-        #  ================== 5.0 - Check/Load Prefixes ==================
+        # endregion
 
+        #  region ================== 4.0 - Check/Load Prefixes ==================
         self.load_frame = tk.Frame(self.top_frame)
         self.load_frame.grid(row=2, column=0, sticky='NSEW')
         self.load_frame.columnconfigure(0, weight=1)
-
-        self.load_button = tk.Button(self.load_frame, text='Check & Save Mappings:', height=3,
-                                     command=self.map_prefixes)
+        # Check & Save Button
+        self.load_button = tk.Button(self.load_frame, text='Check & Save Mappings:', height=3, command=self.map_prefixes)
         self.load_button.grid(row=0, column=0, sticky='EW')
         self.load_button.columnconfigure(0, weight=1)
-
+        # Warning Frame & Label
         self.load_frame_2 = tk.Frame(self.top_frame)
         self.load_frame_2.grid(row=2, column=1, sticky='NSEW')
         self.load_frame_2.columnconfigure(0, weight=1)
         self.load_frame_2.rowconfigure(0, weight=1)
-
         self.load_label = tk.Label(self.load_frame_2, text='', anchor='w')
         self.load_label.grid(row=0, column=0, sticky='NSW')
         # endregion
@@ -262,26 +253,7 @@ class PrefixOptions:
         # self.disable_children(self.load_frame)
         # self.disable_children(self.load_frame_2)
 
-    # region Canvas Display Functions
-    def frame_width(self, event):
-        # Updates widths of main and header canvas when adjusted to fit window
-        canvas_width = event.width
-        event.widget.itemconfigure(self.data_can_window, width=canvas_width)
-
-    def config_frame(self, _):
-        # Called when size of header/data subframe are adjusted to align with canvas size
-        self.data_can.configure(scrollregion=self.data_can.bbox('all'), yscrollcommand=self.data_can_scroll.set)
-        # Reset headers is then called to align header data
-        self.data_can.after_idle(self.reset_headers)
-
-    def reset_headers(self):
-        # Matches header canvas to main canvas when expanded
-        for column in range(self.data_can_sub_frame.grid_size()[0]):
-            bbox = self.data_can_sub_frame.grid_bbox(column, 0)
-            self.head_can_sub_frame.columnconfigure(column, minsize=bbox[2])
-    # endregion
-
-    # region Enable/Disable Tab
+    # region 1.0 - Enable/Disable Tab
     def enable_canvas(self):
         # Generate canvas widgets from companies imported, add warning if above suggested limit
         companies = sorted(self.main.raw_company, key=str.lower)
@@ -377,7 +349,7 @@ class PrefixOptions:
                 self.disable_children(child)
     # endregion
 
-    # region Substring Functions
+    # region 2.0 - Automap/Clear/replace Mappings Functions
     def substring_range(self, _):
         self.string_entry_1.delete(0, tk.END)
         self.string_entry_2.delete(0, tk.END)
@@ -416,38 +388,7 @@ class PrefixOptions:
                 self.map_button['state'] = state
             except ValueError:
                 self.map_button['state'] = 'disabled'
-    # endregion
 
-    def button_on_off(self, button, var):
-        if button.config('relief')[-1] == 'sunken':
-            button.config(relief='raised')
-            var.set(0)
-            print('Button var:' + str(var.get()))
-
-            col = button.grid_info()['column']
-            print('Button Col:' + str(col))
-
-            for child in self.data_can_sub_frame.winfo_children():
-                child: tk.Entry()
-                if child.grid_info()['column'] == col:
-                    print('Child Grid Info:' + str(child.grid_info()['column']))
-                    child.config(highlightthickness=2, highlightbackground="white")
-
-        else:
-            button.config(relief='sunken')
-            var.set(1)
-            print('Button var:' + str(var.get()))
-
-            col = button.grid_info()['column']
-            print('Button Col:' + str(col))
-
-            for child in self.data_can_sub_frame.winfo_children():
-                child: tk.Entry()
-                if child.grid_info()['column'] == col:
-                    print('Child Grid Info:' + str(child.grid_info()['column']))
-                    child.config(highlightthickness=2, highlightbackground="#64C75F")
-
-    # region Automap/Clear Mappings Functions
     def automap_cols(self):
         # 1) Get column selections
         columns = [self.comp_map_var, self.pref_map_var]
@@ -509,9 +450,7 @@ class PrefixOptions:
                     child: tk.Entry()  # Must explicitly declare type to prevent attribute error as frame is null
                     if child.grid_info()["column"] == x:
                         child.delete(0, tk.END)
-    # endregion
 
-    # Replace String
     def replace_string(self):
         # 1) Get string replacement selections
         original_string = self.replace_entry.get()
@@ -543,8 +482,9 @@ class PrefixOptions:
 
                         child.delete(0, tk.END)
                         child.insert(0, new_string)
+    # endregion
 
-    # region Prefix/Suffix Functions
+    # region 2.0 - Prefix/Suffix Functions
     def prefix_toggle(self):
         if self.suffix_prefix_button.config('text')[-1] == 'Prefix':
             self.suffix_prefix_button.config(text='Suffix')
@@ -560,7 +500,49 @@ class PrefixOptions:
             self.code_format.set('CODE' + str(self.prefix_divider.get()) + 'SUFFIX')
     # endregion
 
-    # Save Mappings
+    # region 3.0 - Canvas Display, Select Columns
+    def frame_width(self, event):
+        # Updates widths of main and header canvas when adjusted to fit window
+        canvas_width = event.width
+        event.widget.itemconfigure(self.data_can_window, width=canvas_width)
+
+    def config_frame(self, _):
+        # Called when size of header/data subframe are adjusted to align with canvas size
+        self.data_can.configure(scrollregion=self.data_can.bbox('all'), yscrollcommand=self.data_can_scroll.set)
+        # Reset headers is then called to align header data
+        self.data_can.after_idle(self.reset_headers)
+
+    def reset_headers(self):
+        # Matches header canvas to main canvas when expanded
+        for column in range(self.data_can_sub_frame.grid_size()[0]):
+            bbox = self.data_can_sub_frame.grid_bbox(column, 0)
+            self.head_can_sub_frame.columnconfigure(column, minsize=bbox[2])
+
+    def button_on_off(self, button, var):
+        if button.config('relief')[-1] == 'sunken':
+            button.config(relief='raised')
+            var.set(0)
+
+            col = button.grid_info()['column']
+
+            for child in self.data_can_sub_frame.winfo_children():
+                child: tk.Entry()
+                if child.grid_info()['column'] == col:
+                    child.config(highlightthickness=2, highlightbackground="white")
+
+        else:
+            button.config(relief='sunken')
+            var.set(1)
+
+            col = button.grid_info()['column']
+
+            for child in self.data_can_sub_frame.winfo_children():
+                child: tk.Entry()
+                if child.grid_info()['column'] == col:
+                    child.config(highlightthickness=2, highlightbackground="#64C75F")
+    # endregion
+
+    # region 4.0 - Save Mappings
     def map_prefixes(self):
         # 1) Flags created for blank companies & no prefixes mapped
         self.main.prefix_accepted = False
@@ -631,5 +613,6 @@ class PrefixOptions:
             self.main.prefixed_tb = tb_join
             self.main.prefix_accepted = True
 
-        print('\n======== PREFIXED TB ========')
-        print(self.main.prefixed_tb)
+        # print('\n======== PREFIXED TB ========')
+        # print(self.main.prefixed_tb)
+    # endregion
