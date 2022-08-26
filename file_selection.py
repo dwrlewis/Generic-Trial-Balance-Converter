@@ -429,8 +429,8 @@ class FileSelect:
             # region 8.2) Update import label with number of files & no. of TB & COA lines
             file_no = pd.concat([raw_tb['Filename'], raw_coa['Filename']])  # Unique Files variables
             self.load_label.config(text='TB data has been imported for ' + str(file_no.nunique()) + ' files, totalling '
-                                        + str(len(raw_tb)) + ' TB lines, and ' + str(len(raw_coa)) +
-                                        ' COA lines. Please review any errors flagged.', fg='#8ace7e')
+                                        + str(len(raw_tb)) + ' TB lines, and ' + str(len(raw_coa['Code'].unique())) +
+                                        ' unique COA codes. Please review any errors flagged.', fg='#8ace7e')
             # endregion
 
             # region 8.3) Enables the Prefix & duplicate description GUI tabs

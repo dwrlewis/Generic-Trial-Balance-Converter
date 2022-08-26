@@ -184,7 +184,7 @@ class DataExport:
         self.coa_dqi_frame.grid(row=1, column=1, sticky='NSEW')
 
         # COA X axis Headers
-        tb_x_string = ['Lines', 'Irregular FSAs', 'Blank FSAs']
+        tb_x_string = ['Unique Codes', 'Irregular FSAs', 'Blank FSAs']
         for x, string in enumerate(tb_x_string):
             tk.Label(self.coa_dqi_frame, text=string).grid(row=0, column=x + 1, padx=3, pady=3)
             if string != '':
@@ -285,7 +285,7 @@ class DataExport:
         raw_coa = self.main.raw_coa
         coa_lines, coa_irregular, coa_blank = self.raw_coa_entries
         if len(raw_coa) != 0:
-            coa_lines.insert(0, str(len(raw_coa)))
+            coa_lines.insert(0, str(len(raw_coa['Code'].unique())))
             coa_irregular.insert(0, str(len(raw_coa[~raw_coa['FSA'].isin(self.fsa_list)].dropna(subset=['FSA']))))
             coa_blank.insert(0, str(raw_coa['FSA'].isnull().sum()))
             self.coa_opt_list[1].config(state='normal', fg='#8ace7e')
@@ -330,11 +330,12 @@ class DataExport:
         # region 6) Adj COA Check for line total, no. of irregular mappings, and blank mappings, update GUI
         if self.main.desc_on and self.main.desc_accepted:
             coa = self.main.final_coa.copy()
+            code = 'Pref. Code' if 'Pref. Code' in coa else 'Code'
             fsa_field = 'FSA Remap' if 'FSA Remap' in coa else 'FSA'
             lines, irregular, blank = self.adj_coa_entries
 
             if len(coa) != 0:
-                lines.insert(0, str(len(coa)))
+                lines.insert(0, str(len(coa[code].unique())))
                 blank.insert(0, str(coa[fsa_field].isnull().sum()))
                 irregular.insert(0, str(len(coa[~coa[fsa_field].isin(self.fsa_list)].dropna(subset=[fsa_field]))))
                 self.coa_opt_list[0].config(state='normal', fg='#8ace7e')
