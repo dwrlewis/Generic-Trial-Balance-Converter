@@ -79,7 +79,7 @@ class FileSelect:
         # Main Canvas Window
         self.data_can_window = self.data_can.create_window(0, 0, anchor='nw', window=self.data_can_sub_frame)
         # Scrollbar
-        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient="vertical", command=self.data_can.yview)
+        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient='vertical', command=self.data_can.yview)
         self.data_can_scroll.grid(row=1, column=5, sticky='NS')
         # endregion
 
@@ -435,13 +435,13 @@ class FileSelect:
 
             # region 8.3) Enables the Prefix & duplicate description GUI tabs
             for tab in range(1, 3):
-                self.master.tab(tab, state="normal")
+                self.master.tab(tab, state='normal')
             # endregion
         else:
             self.load_label.config(text='ERROR: No viable data found in PY, OP, or CL tabs of any files, '
                                         'or no TB periods were selected for import.', fg='#ff684c')
             for tab in range(1, 4):
-                self.master.tab(tab, state="disabled")
+                self.master.tab(tab, state='disabled')
 
         # endregion
 

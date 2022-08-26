@@ -91,7 +91,7 @@ class CoaConfigure:
         self.master.add(self.top_frame, text='COA Regeneration')
         self.top_frame.columnconfigure(1, weight=1)
         self.top_frame.rowconfigure(1, weight=1)
-        # self.master.tab(3, state="disabled")
+        self.master.tab(3, state='disabled')
         # endregion
 
         # region ================== 1.0 - Load Mappings ==================
@@ -198,7 +198,7 @@ class CoaConfigure:
         # Main Canvas Window
         self.data_can_window = self.data_can.create_window(0, 0, anchor='nw', window=self.data_can_sub_frame)
         # Scrollbar
-        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient="vertical", command=self.data_can.yview)
+        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient='vertical', command=self.data_can.yview)
         self.data_can_scroll.grid(row=1, column=3, sticky='NS')
         # endregion
 
@@ -286,8 +286,9 @@ class CoaConfigure:
 
             # region 9) Generate canvas GUI if no. of FSA's if below threshold, otherwise set fsa_limit to true
             if len(fsa_flag) == 0:
+                print('ZERO FSA ERRORS')
                 self.fsa_limit = False
-                self.load_warn_label.config(text='New COA has been generated. No non-standard FSAs found.')
+                self.load_warn_label.config(text='New COA generated. No non-standard FSAs found.', fg='#8ace7e')
                 self.main.final_coa = coa.copy()
                 self.main.coa_accepted = True
                 # DISABLE AUTO-MAPPING
@@ -322,11 +323,12 @@ class CoaConfigure:
             # self.coa_mapped_codes.config(text=coa['FSA Orig. + Ext.'].isna().sum())
             self.result_unmapped.config(text=coa['FSA'].isna().sum())
             self.result_misc.config(text=len(fsa_flag))
-            self.load_warn_label.config(text='New COA has been generated. Please review any non-standard mappings.')
+            self.load_warn_label.config(text='New COA generated. No non-standard FSAs found.', fg='#8ace7e')
             # endregion
 
         else:
-            self.load_warn_label.config(text='Desc. mappings have not been approved in previous tab. Please revise.')
+            self.load_warn_label.config(text='Desc. mappings have not been approved in previous tab. Please revise.',
+                                        fg='#ff684c')
         # endregion
     # endregion
 

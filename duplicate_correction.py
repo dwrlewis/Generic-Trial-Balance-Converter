@@ -26,7 +26,7 @@ class DuplicateCorrection:
         self.top_frame.columnconfigure(1, weight=1)
         self.top_frame.rowconfigure(1, weight=1)
         self.master.add(self.top_frame, text='Description Settings')
-        # self.master.tab(2, state="disabled")
+        self.master.tab(2, state='disabled')
         # endregion
 
         # region ================== 1.0 - Description Mapping On/Off ==================
@@ -64,7 +64,7 @@ class DuplicateCorrection:
         self.join_frame.grid(row=1, column=0, sticky='NSEW', padx=5, pady=5)
         for x in range(3):
             self.join_frame.columnconfigure(x, weight=1)
-        # Header Label - "Check Descriptions"
+        # Header Label - 'Check Descriptions'
         self.join_label_header = tk.Label(self.join_frame, text='Check Descriptions:')
         self.join_label_header.grid(row=0, column=0, columnspan=3, sticky='W')
         # Trim blanks checkbox
@@ -72,7 +72,7 @@ class DuplicateCorrection:
         self.trim_var.set(1)
         self.join_check = tk.Checkbutton(self.join_frame, text='Trim leading & trailing spaces', variable=self.trim_var)
         self.join_check.grid(row=1, column=0, columnspan=3, sticky='W')
-        # Header Label - "Adjust description casings"
+        # Header Label - 'Adjust description casings'
         self.case_label = tk.Label(self.join_frame, text='Adjust Description Casings:')
         self.case_label.grid(row=2, column=0, columnspan=3, sticky='W')
         # Case Changing - Radio Button
@@ -158,7 +158,7 @@ class DuplicateCorrection:
         # Main Canvas Window
         self.data_can_window = self.data_can.create_window(0, 0, anchor='nw', window=self.data_can_sub_frame)
         # Scrollbar
-        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient="vertical", command=self.data_can.yview)
+        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient='vertical', command=self.data_can.yview)
         self.data_can_scroll.grid(row=1, column=3, sticky='NS')
         # endregion
         # endregion
@@ -215,7 +215,7 @@ class DuplicateCorrection:
         # Main Canvas Window
         self.data_can_window = self.data_can.create_window(0, 0, anchor='nw', window=self.data_can_sub_frame)
         # Scrollbar
-        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient="vertical", command=self.data_can.yview)
+        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient='vertical', command=self.data_can.yview)
         self.data_can_scroll.grid(row=1, column=3, sticky='NS')
 
         self.on_off_warn_label.config(text='Descriptions will not be adjusted. New COA cannot be generated without\n'
@@ -303,7 +303,7 @@ class DuplicateCorrection:
         elif int(multiple_desc[[code_field]].nunique()) <= 300:
             self.dupe_limit = False
             self.on_off_warn_label.config(text=str(int(multiple_desc[[code_field]].nunique())) +
-                                               ' inconsistent descriptions found, please select mappings.',
+                                          ' inconsistent descriptions found, please select mappings.',
                                           fg='#ffda66')
             # enable gui due to adjustments needed?
             self.enable_children(self.map_frame)
@@ -328,8 +328,8 @@ class DuplicateCorrection:
         else:
             self.dupe_limit = True
             self.on_off_warn_label.config(text=str(int(multiple_desc[[code_field]].nunique())) +
-                                               ' inconsistent descriptions found, exceeds display limits.'
-                                               '\nPlease refer to Auto Map to correct duplicates.', fg='#ffda66')
+                                          ' inconsistent descriptions found, exceeds display limits.'
+                                          '\nPlease refer to Auto Map to correct duplicates.', fg='#ffda66')
 
             # enable gui due to adjustments needed?
             self.enable_children(self.map_frame)
@@ -509,11 +509,11 @@ class DuplicateCorrection:
         if len(desc_check) == 0:
             self.main.desc_accepted = True
             self.output_label.config(text='Trial balance updated with consistent descriptions', fg='#8ace7e')
-            self.master.tab(3, state="normal")
+            self.master.tab(3, state='normal')
         else:
             self.main.desc_accepted = False
             self.output_label.config(text='ERROR: Internal error, duplicates present after filtering.', fg='#ff684c')
-            self.master.tab(3, state="disabled")
+            self.master.tab(3, state='disabled')
         # endregion
 
     # endregion

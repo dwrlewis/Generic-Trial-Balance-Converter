@@ -19,7 +19,7 @@ class PrefixOptions:
         self.top_frame.columnconfigure(1, weight=1)
         self.top_frame.rowconfigure(1, weight=1)
         self.master.add(self.top_frame, text='Prefix Settings')
-        # self.master.tab(1, state="disabled")
+        self.master.tab(1, state='disabled')
         # endregion
 
         # region ================== 1.0 - Prefix Enable ==================
@@ -66,7 +66,7 @@ class PrefixOptions:
         self.string_frame.grid(row=1, column=0, sticky='EW', padx=5, pady=5)
         self.string_label = tk.Label(self.string_frame, text='Substring Selections:')
         self.string_label.grid(row=0, column=0, columnspan=6, sticky='W')
-        # Substring Format Selections - "Map" Label
+        # Substring Format Selections - 'Map' Label
         self.string_label_map = tk.Label(self.string_frame, text='Map')
         self.string_label_map.grid(row=1, column=0, sticky='W')
         # Substring Format Selections - Combobox
@@ -80,13 +80,13 @@ class PrefixOptions:
         self.string_entry_1['state'] = 'disabled'
         self.string_entry_1.bind('<KeyRelease>', self.substring_check)
         self.string_entry_1.grid(row=1, column=2)
-        # Substring Format Selections - "-" Label
+        # Substring Format Selections - '-' Label
         self.string_label_comma = tk.Label(self.string_frame, text=', ')
         # Substring Format Selections - No. Entry 2
         self.string_entry_2 = tk.Entry(self.string_frame, width=5, disabledbackground='#858585')
         self.string_entry_2['state'] = 'disabled'
         self.string_entry_2.bind('<KeyRelease>', self.substring_check)
-        # Substring Format Selections - "Characters" Label
+        # Substring Format Selections - 'Characters' Label
         self.string_label_char = tk.Label(self.string_frame, text='Characters')
         self.string_label_char.grid(row=1, column=5, sticky='W')
         # endregion
@@ -122,16 +122,16 @@ class PrefixOptions:
         # Custom string - Header Label
         self.replace_header_label = tk.Label(self.replace_frame, text='Custom String Replacement:')
         self.replace_header_label.grid(row=0, column=0, columnspan=2, sticky='W')
-        # Custom string - "Replace" Label
+        # Custom string - 'Replace' Label
         self.replace_label = tk.Label(self.replace_frame, text='Replace:')
         self.replace_label.grid(row=1, column=0, sticky='W')
-        # Custom string - "Replace" Entry
+        # Custom string - Replace Entry
         self.replace_entry = tk.Entry(self.replace_frame)
         self.replace_entry.grid(row=1, column=1, sticky='EW', padx=5)
-        # Custom string - "With" Label
-        self.with_label = tk.Label(self.replace_frame, text="With:")
+        # Custom string - 'With' Label
+        self.with_label = tk.Label(self.replace_frame, text='With:')
         self.with_label.grid(row=2, column=0, sticky='W')
-        # Custom string - "With" Entry
+        # Custom string - With Entry
         self.with_entry = tk.Entry(self.replace_frame)
         self.with_entry.grid(row=2, column=1, sticky='EW', padx=5)
         # Custom string - Exact Case on/off
@@ -157,10 +157,10 @@ class PrefixOptions:
         self.pref_button = tk.Button(self.pref_frame, text='Prefix', command=self.prefix_toggle)
         self.pref_button.grid(row=1, column=1, sticky='EW', padx=5)
         # Prefix/Suffix Format - Label
-        self.pref_divider = tk.StringVar(value='')
         self.pref_label_divider = tk.Label(self.pref_frame, text='Divider:')
         self.pref_label_divider.grid(row=2, column=0, sticky='W')
         # Prefix/Suffix Format - Entry
+        self.pref_divider = tk.StringVar(value='')
         self.pref_entry = tk.Entry(self.pref_frame, textvariable=self.pref_divider)
         self.pref_entry.grid(row=2, column=1, sticky='EW', padx=5)
         self.pref_entry.bind('<KeyRelease>', self.prefix_toggle_display)
@@ -223,7 +223,7 @@ class PrefixOptions:
         # Main Canvas Window
         self.data_can_window = self.data_can.create_window(0, 0, anchor='nw', window=self.data_can_sub_frame)
         # Scrollbar
-        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient="vertical", command=self.data_can.yview)
+        self.data_can_scroll = tk.Scrollbar(self.can_frame, orient='vertical', command=self.data_can.yview)
         self.data_can_scroll.grid(row=1, column=5, sticky='NS')
         # endregion
 
@@ -419,7 +419,7 @@ class PrefixOptions:
                         # region 4.2) Reformat string if option was selected
                         if self.case_var.get() != 0:
                             if self.case_var.get() == 1:
-                                company = company.replace("'", "").title()
+                                company = company.replace("'", "'").title()
                             elif self.case_var.get() == 2:
                                 company = company.upper()
                             elif self.case_var.get() == 3:
@@ -445,7 +445,7 @@ class PrefixOptions:
             if col.get() == 1:
                 for child in self.data_can_sub_frame.winfo_children():
                     child: tk.Entry()  # Must explicitly declare type to prevent attribute error as frame is null
-                    if child.grid_info()["column"] == x:
+                    if child.grid_info()['column'] == x:
                         child.delete(0, tk.END)
 
     def replace_string(self):
@@ -529,7 +529,7 @@ class PrefixOptions:
             for child in self.data_can_sub_frame.winfo_children():
                 child: tk.Entry()
                 if child.grid_info()['column'] == col:
-                    child.config(highlightthickness=2, highlightbackground="white")
+                    child.config(highlightthickness=2, highlightbackground='white')
         else:
             button.config(relief='sunken')
             var.set(1)
@@ -537,7 +537,7 @@ class PrefixOptions:
             for child in self.data_can_sub_frame.winfo_children():
                 child: tk.Entry()
                 if child.grid_info()['column'] == col:
-                    child.config(highlightthickness=2, highlightbackground="#64C75F")
+                    child.config(highlightthickness=2, highlightbackground='#64C75F')
 
     # endregion
 

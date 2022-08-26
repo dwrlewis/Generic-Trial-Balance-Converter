@@ -91,7 +91,6 @@ class DataExport:
         self.top_frame.columnconfigure(1, weight=1)
         self.top_frame.rowconfigure(0, weight=1)
         self.top_frame.rowconfigure(1, weight=1)
-        # self.master.tab(4, state="disabled")
         # endregion
 
         # region ================== 1.0 - Check Data & Options ==================
@@ -237,8 +236,7 @@ class DataExport:
         self.export_fp_frame.grid(row=2, column=1, sticky='EW')
         self.export_fp_frame.columnconfigure(0, weight=1)
 
-        self.fp_text = tk.StringVar(value='Select Export Directory')
-        self.fp_label = tk.Label(self.export_fp_frame, textvariable=self.fp_text)
+        self.fp_label = tk.Label(self.export_fp_frame, text='Select Export Directory')
         self.fp_label.grid(row=0, column=0, sticky='W')
 
         self.export_button = tk.Button(self.export_fp_frame, text='Export Data', command=self.data_export, height=3)
@@ -367,18 +365,16 @@ class DataExport:
             fp = filedialog.askdirectory(initialdir='/', title='Select a directory')
             # Sets GUI label to selected filepath, exits function if not selected
             if len(fp) != 0:
-                self.fp_text.set(str(fp))
                 self.export_button['state'] = 'normal'
-                self.fp_label.config(fg='#8ace7e')
+                self.fp_label.config(text=str(fp), fg='#8ace7e')
                 os.chdir(fp)
             else:
-                self.fp_text.set('ERROR: No Filepath was selected')
-                self.fp_label.config(fg='#ff684c')
+                self.fp_label.config(text='ERROR: No Filepath was selected', fg='#ff684c')
                 self.export_button['state'] = 'disable'
                 return
         # Filepath error handling exception
         except Exception as error:
-            self.fp_text.set('ERROR: ' + str(error))
+            self.fp_label.config(text='ERROR: ' + str(error), fg='#ff684c')
             self.export_button['state'] = 'disable'
 
     def data_export(self):
@@ -406,8 +402,8 @@ class DataExport:
                     elif pref_on and pref_accept:
                         tb = self.main.prefixed_tb.copy()
                     else:
-                        self.fp_text.set('ERROR: Adj. TB not exported, neither prefix or desc. corrections performed')
-                        self.fp_label.config(fg='#ff684c')
+                        self.fp_label.config(text='ERROR: Adj. TB not exported, '
+                                                  'neither prefix or desc. corrections performed', fg='#ff684c')
                         return
 
                     company_field = 'Company New' if 'Company New' in tb.columns else 'Company'
@@ -480,8 +476,8 @@ class DataExport:
                     elif pref_on and pref_accept:
                         tb = self.main.prefixed_tb.copy()
                     else:
-                        self.fp_text.set('ERROR: Det. TB not exported, neither prefix or desc. corrections performed')
-                        self.fp_label.config(fg='#ff684c')
+                        self.fp_label.config(text='ERROR: Det. TB not exported, '
+                                                  'neither prefix or desc. corrections performed', fg='#ff684c')
                         return
 
                     tb.to_excel(writer, sheet_name='Det. TB', index=False)
@@ -499,13 +495,10 @@ class DataExport:
 
                 # region 7) GUI update if no selections made or data exported successfully
                 if exports_check:
-                    self.fp_text.set('Selected Data has been exported to folder')
-                    self.fp_label.config(fg='#8ace7e')
+                    self.fp_label.config(text='Selected Data has been exported to folder', fg='#8ace7e')
                 else:
-                    self.fp_text.set('ERROR: No selections were made')
-                    self.fp_label.config(fg='#ff684c')
+                    self.fp_label.config(text='ERROR: No selections were made', fg='#ff684c')
                 # endregion
         except Exception as error:
-            self.fp_text.set('ERROR: ' + str(error))
-            self.fp_label.config(fg='#ff684c')
+            self.fp_label.config(text='ERROR: ' + str(error), fg='#ff684c')
     # endregion
