@@ -70,13 +70,13 @@ Hovering over a particular cell containing an error will display a list of all t
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/2%20-%20Tab%20Error%20Checking.gif)
 
-Once the imported data has been checked for errors and deemed adequate, move to the Prefix Settings tab of the user interface.
+Once the imported data has been checked for errors and deemed adequate, move to the ‘Prefix Settings’ tab of the user interface.
 
 
 # <a name="prefix"></a>3.0 – Prefix Settings:
 
 ### 3.1 - Selecting Company & Prefix Corrections
-The prefix settings tab is the first set of corrections to make to a trial balance. In the top left of this tab, there is a selection for this option. Note that whilst it is not mandatory to perform these checks, not doing so will disable the setting to generate a new TB.
+The prefix settings tab is the first set of corrections to make to a TB. In the top left of this tab, there is a selection for this option. Note that whilst it is not mandatory to perform these checks, not doing so will disable generating a new COA in a later tab, as it is dependent on corrections made in this section.
 
 Once the selection is made, it will generate a list of all unique company names found across all imported data files in the interface. This is intended to flag inconsistencies in how companies have been entered across different tabs and files. For example, “Alpha Company Limited” might be entered as “Alpha Ltd” in a different tab of data, which would cause alignment errors when loaded into a financial analyser dashboard.
 
@@ -89,19 +89,29 @@ Both the ‘New Comp. Mappings’ and ‘Prefix/Suffix’ headers can be selecte
 
 By default, the Automap Column(s) function is set to use the whole string but can also be adjusted to draw from the left, mid, or right of the Imported Company field in the same way as excel. 
 
-There are also casing adjustments for Upper, Lower, and Title, as well as trimming whitespace from the field, and a replace function that can be limited by casings.
+There are also casing adjustments for Upper, Lower, and Title, as well as trimming whitespace from the field, and a replace function that can be limited by casings. Below is an example of correcting the imported companies:
+
+1) The Mid function is used to take all text past "Company", and convert into title case for consistency
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/3%20-%20Company%20Format%20Map%20+%20Substring.gif)
 
+2) Instances of ‘limited’ in all cases are replaced with ‘Ltd’. Manual corrections are then made for the remaining companies
+
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/4%20-%20Company%20Replace.gif)
 
+3) For the prefixes, a mid function is used with upper case to take 5 characters from the company field to generate the prefixes
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/01b7ddf9fcb31e8ad4af3a537101d6c35c372b95/Readme%20Gifs/5%20-%20Prefix%20Map.gif)
+
 ### 3.3 - Prefix/Suffix Formatting Options
-When inputting the prefix, dividers should not be added here. For example, ‘Company Alpha’ should have its prefix input as ‘ALPHA’ rather than ‘ALPHA\_’. The divider is instead set in the bottom left section of the options, should one be needed. It is also possible to set the formatting to suffixes instead. An example of the format of the outputted codes is also displayed here.
+When inputting the prefix, dividers should not be added manually. For example, ‘Company Alpha’ should have its prefix input as ‘ALPHA’ rather than ‘ALPHA\_’. The divider is instead set in the bottom left section of the options, should one be needed. It is also possible to set the formatting to suffixes instead. An example of the format of the outputted codes is also displayed in the GUI:
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/6%20-%20Prefix%20Divider%20v2.gif)
 
+For example, setting a prefix to ‘ALPHA’, maintaing prefix format, and the delimiter as a ‘__’, will result in the output codes like ‘ALPHA__1000’.
+
 ### 3.4 - Saving Mappings
-When all mappings have been filled out, pressing ‘Check & Save Mappings:’ will either mark all fields in green if filled out correctly, or flag up an empty field. Adding prefixes is not mandatory, and will only flag up a warning, but remapping companies must be completed to flag this section as complete. 
+When all mappings have been filled out, pressing ‘Check & Save Mappings:’ will either mark all fields in green if filled out correctly, or flag up an empty field. Adding prefixes is not mandatory for all companies, and will only flag up a warning, but remapping company names must be completed to flag this section as complete. 
 
 When all mappings are confirmed, move to the ‘Description Settings’ tab.
 
