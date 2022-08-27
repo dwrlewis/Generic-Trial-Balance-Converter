@@ -2,15 +2,15 @@
 # Contents
 [1.0 – Overview](#overview)
 
-[2.0 – Import Selection:	3](#import)
+[2.0 – Import Selection](#import)
 
-[3.0 – Prefix Settings:	4](#prefix)
+[3.0 – Prefix Settings](#prefix)
 
-[4.0 – Description Settings:	5](#desc)
+[4.0 – Description Settings](#desc)
 
-[5.0 – Chart of Accounts Generation:	6](#coa)
+[5.0 – Chart of Accounts Generation](#coa)
 
-[6.0 – Export Data:	7](#export)
+[6.0 – Export Data](#export)
 
 
 # <a name="overview"></a>1.0 – Overview:
@@ -50,9 +50,9 @@ The converter can be used for checking and correction of an individual .xlsm tem
 
 The User Interface opens in the Import Selection tab. Select the import directory in the top left of this tab, which will automatically display a list of .xlsm files in the selected path.
 
-[INSERT IMAGE]
-
 The data to import can be selected down to the individual tabs. For example, one file may have its Prior, Closing and COA imported, whilst another may only have a Closing imported. 
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/122afb7b9c98e57406c37bdbac849a3f104898aa/Readme%20Gifs/1%20-%20Tab%20Selection.gif)
 
 The header columns are also selectable buttons to enable/disable the import for an entire tab set, as are the Filenames which enable/disables the import for that particular file.
 
