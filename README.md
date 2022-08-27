@@ -26,7 +26,7 @@ This program was designed for the checking & correction of financial trial balan
 - Remapping of chart of accounts in instances where non-standard template mappings are present
 - Export of the company(s) data, consolidated into one file if multiple .xlsm files were input
 
-**Note:** The files [saved here](https://github.com/dwrlewis/Trial-Balance-Converter/tree/master/Test%20Files) match the format of the .xlsm template this program was designed for, but are minimum reproductions. This is because the original template contained a large number of macros that were internally designed by the auditing company. As such, the templates provided have been entirely stripped of any company specific info. The program has not been changed to accommodate for this, as both the dummy files provided and original templates can be run without any adjustment.
+**NOTE:** The files [saved here](https://github.com/dwrlewis/Trial-Balance-Converter/tree/master/Test%20Files) match the format of the .xlsm template this program was designed for, but are minimum reproductions. This is because the original template contained a large number of macros that were internally designed by the auditing company. As such, the templates provided have been entirely stripped of any company specific info. The program has not been changed to accommodate for this, as both the dummy files provided and original templates can be run without any adjustment.
 
 ### 1.2 - Interpreter Settings
 This program was generated in Python 3.8.0 using the Pycharm IDE with the following interpreter settings:
@@ -49,33 +49,28 @@ This program was generated in Python 3.8.0 using the Pycharm IDE with the follow
 # <a name="import"></a>2.0 – Import Selection:
 
 ### 2.1 - File Path & Import
-The converter can be used for checking and correction of an individual .xlsm template or multiple simultaneously, the latter of which will result in all data being consolidated into a single file for export.
+The converter can be used for checking and correcting an individual .xlsm template or multiple simultaneously, the latter of which will result in all data being consolidated into a single file for export. The User Interface opens in the Import Selection tab. Select the import directory in the top left of this tab, which will automatically display a list of .xlsm files in the selected folder.
 
-The User Interface opens in the Import Selection tab. Select the import directory in the top left of this tab, which will automatically display a list of .xlsm files in the selected path.
-
-The data to import can be selected down to the individual tabs. For example, one file may have its Prior, Closing and COA imported, whilst another may only have a Closing imported. 
-
-The header columns are also selectable buttons to enable/disable the import for an entire tab set, as are the Filenames which enable/disables the import for that particular file.
+The data to import can be selected down to the individual tabs. For example, one file may have its Prior, Closing and COA imported, whilst another may only have a Closing imported. The header columns are also selectable buttons to enable/disable the import for an entire tab set, as are the Filenames which enable/disables the import for that particular file:
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/122afb7b9c98e57406c37bdbac849a3f104898aa/Readme%20Gifs/1%20-%20Tab%20Selection.gif)
 
-The Filter Null Amounts option is designed for unusually large system exports containing every possible code in a system, even ones that have seen no movement. As such, this can be used to remove all irrelevant trial balance lines for each period, reducing both load time and redundant error flags.
+The Filter Null Amounts option is designed for unusually large system exports containing every possible code in a system, even ones that have seen no movement in the year end period being audited. As such, this can be used to remove all irrelevant TB lines for each period, reducing both load time and redundant error flags.
 
-Once selections are made, Load Trial Balances can be selected in the bottom left.
+Once selections are made, "Load Trial Balances" can be selected in the bottom left to begin importing the selected data.
 
 ### 2.2 - Import Results and Error Flags
-Once all the files in the selected folder have been checked, the user interface colours will update to display any immediate errors it may have flagged in a specific tab of a dataset:
+Once all the files have been checked, the user interface colours will update to display any immediate errors it may have flagged in each files tabs:
 
 - Green highlights mean that there were no errors found in the data tab.
 - Yellow highlights mean there are minor errors present. This can include things like null descriptions or amount fields where zeroes may have been left as null entries.
-- Red highlights mean this tab of data could not be imported. This can be a result of missing company or account codes in their respective fields, non-numeric data in the amount field, or miscellaneous import errors such as missing tabs or column headers.
+- Red highlights mean this tab of data could not be imported. This can be a result of missing company or account codes, non-numeric data in the amount field, or miscellaneous import errors such as missing tabs or column headers, which would indicate the client has made major adjustments to the template.
 
 Hovering over a particular cell containing an error will display a list of all the errors that were found whilst try to import the data from that particular tab. It is also possible to change selections press Load Trial Balances again, if for example, you decide a particular dataset can be left out entirely based on errors flagged in a particular tab. 
 
-Once the data imported data has been deemed adequate, move to the Prefix Settings tab of the user interface.
-
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/2%20-%20Tab%20Error%20Checking.gif)
 
+Once the imported data has been checked for errors and deemed adequate, move to the Prefix Settings tab of the user interface.
 
 
 # <a name="prefix"></a>3.0 – Prefix Settings:
