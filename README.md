@@ -1,16 +1,16 @@
 ﻿# Trial Balance Converter Readme
 # Contents
-# [1.0 – Overview](#overview)
+### [1.0 – Overview](#overview)
 
-## [2.0 – Import Selection](#import)
+### [2.0 – Import Selection](#import)
 
-## [3.0 – Prefix Settings](#prefix)
+### [3.0 – Prefix Settings](#prefix)
 
-## [4.0 – Description Settings](#desc)
+### [4.0 – Description Settings](#desc)
 
-## [5.0 – Chart of Accounts Generation](#coa)
+### [5.0 – Chart of Accounts Generation](#coa)
 
-## [6.0 – Export Data](#export)
+### [6.0 – Export Data](#export)
 
 
 
