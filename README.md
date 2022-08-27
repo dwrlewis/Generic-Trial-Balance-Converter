@@ -2,45 +2,15 @@
 # Contents
 [1.0 – Overview:	2](#_Toc111671708)
 
-[Preface	2](#_Toc111671709)
-
-[Interpreter Settings	2](#_Toc111671710)
-
 [2.0 – Import Selection:	3](#_Toc111671711)
-
-[File Path & Import	3](#_Toc111671712)
-
-[Import Results and Error Flags	3](#_Toc111671713)
 
 [3.0 – Prefix Settings:	4](#_Toc111671714)
 
-[Selecting Company & Prefix Corrections	4](#_Toc111671715)
-
-[Additional Options	4](#_Toc111671716)
-
-[Prefix/Suffix Formatting Options	4](#_Toc111671717)
-
-[Saving Mappings	4](#_Toc111671718)
-
 [4.0 – Description Settings:	5](#_Toc111671719)
-
-[Selecting Company & Prefix Corrections	5](#_Toc111671720)
-
-[Automapping Descriptions	5](#_Toc111671721)
 
 [5.0 – Chart of Accounts Generation:	6](#_Toc111671722)
 
-[Pre-requisites to Generate a New COA	6](#_Toc111671723)
-
-[Selecting Mapping Sources	6](#_Toc111671724)
-
-[Non-standard Mappings	6](#_Toc111671725)
-
 [6.0 – Export Data:	7](#_Toc111671726)
-
-[Review Data	7](#_Toc111671727)
-
-
 
 
 # 1.0 – Overview:
