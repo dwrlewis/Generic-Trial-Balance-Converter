@@ -13,6 +13,7 @@
 ## [6.0 – Export Data](#export)
 
 
+
 # <a name="overview"></a>1.0 – Overview:
 
 ## Preface
@@ -44,6 +45,7 @@ This program was generated in Python 3.8.0 using the Pycharm IDE with the follow
 |Wheel|0.36.2|
 
 
+
 # <a name="import"></a>2.0 – Import Selection:
 ## File Path & Import
 The converter can be used for checking and correction of an individual .xlsm template or multiple simultaneously, the latter of which will result in all data being consolidated into a single file for export.
@@ -71,6 +73,7 @@ Hovering over a particular cell containing an error will display a list of all t
 Once the data imported data has been deemed adequate, move to the Prefix Settings tab of the user interface.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/2%20-%20Tab%20Error%20Checking.gif)
+
 
 
 # <a name="prefix"></a>3.0 – Prefix Settings:
@@ -105,6 +108,8 @@ When all mappings are confirmed, move to the ‘Description Settings’ tab.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/7%20-%20Saving%20Mappings%20v2.gif)
 
+
+
 #  <a name="desc"></a>4.0 – Description Settings:
 ## Selecting Company & Prefix Corrections
 Similarly, to the prefixes tab, inconsistent descriptions do not have to be corrected, but this tab is dependent on the completion of the prefix settings tab. Selecting yes enable the Check Descriptions Menu.
@@ -127,6 +132,7 @@ Prioritisation order can also be set within an individual tab itself. By default
 When ‘Check & Save Mappings’ is selected, it will automatically flag up blank description selections the same way as in the prefix settings tab. Otherwise, if all selections are made, move on to the COA Regeneration tab.
 
 
+
 #  <a name="coa"></a>5.0 – Chart of Accounts Generation:
 ## Pre-requisites to Generate a New COA
 It is only possible to regenerate a chart of accounts if both the Prefix Settings and Description Settings Tabs have both been completed. This is because the data must have had all errors relating to these tabs purged from the trial balance, or this section would regenerate the same errors in the COA and cause inconsistencies when loaded into a financial analyser.
@@ -147,6 +153,7 @@ Approximate mapping is available to correct this should the volume be too excess
 Alternatively, these custom mappings can be maintained, as it was possible to add to the standard mappings field in the original .xlsm template for exceptional circumstances.
 
 Once all non-standard codes are corrected and ‘Check & Save Mappings’ is selected, move on to the Export Data tab.
+
 
 
 #  <a name="export"></a>6.0 – Export Data:
