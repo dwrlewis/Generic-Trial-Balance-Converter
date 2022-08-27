@@ -113,31 +113,30 @@ For example, setting a prefix to ‘ALPHA’, maintaing prefix format, and the d
 ### 3.4 - Saving Mappings
 When all mappings have been filled out, pressing ‘Check & Save Mappings:’ will either mark all fields in green if filled out correctly, or flag up an empty field. Adding prefixes is not mandatory for all companies, and will only flag up a warning, but remapping company names must be completed to flag this section as complete. 
 
-When all mappings are confirmed, move to the ‘Description Settings’ tab.
-
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/7%20-%20Saving%20Mappings%20v2.gif)
 
+When all mappings are confirmed, move to the ‘Description Settings’ tab.
 
 
 #  <a name="desc"></a>4.0 – Description Settings:
 
 ### 4.1 - Selecting Company & Prefix Corrections
-Similarly, to the prefixes tab, inconsistent descriptions do not have to be corrected, but this tab is dependent on the completion of the prefix settings tab. Selecting yes enable the Check Descriptions Menu.
+Similar to the prefix tab, inconsistent descriptions do not have to be corrected, but generating a new COA is dependent on both the completion of the prefix tab as well as this section to prevent generating duplicate codes. Selecting yes enables the ‘Check Descriptions’ Menu.
 
-When checking for account codes with inconsistent descriptions, it is also possible to reduce the number of inconsistencies by trimming descriptions, as well as adjusting their formatting to lower or upper case. Title case is not available due to the impact of special characters on this function.
+When checking for account codes with inconsistent descriptions, it is also possible to reduce the number of inconsistencies using the options. If there is a high volume of inconsistent descriptions, this can be corrected by trimming descriptions, as well as adjusting their formatting to lower or upper case since this is common formatting issue between tabs. Title case is not available due to the unpredictable impact of special characters on this function.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/8%20-%20Load%20Descs%20and%20manual%20map.gif)
 
-When ‘Check Descriptions’ is pressed, a list of account codes and their description options will be generated. If none or present, a notification will pop up prompting to move to the COA Regeneration tab. Otherwise, the number of inconsistent code descriptions will be shown.
+When ‘Check Descriptions’ is pressed, a list of account codes and their description options will be generated. If none are present, a notification will pop up prompting to move to the COA Regeneration tab. Otherwise, the list of inconsistent code descriptions will be shown.
 
 ### 4.2 - Automapping Descriptions
-The Descriptions column contains a drop down containing all of the possible mapping options for a specific code. If there is a significant volume of codes, it is possible to AutoMap the descriptions in priority order.
+The Descriptions column contains a drop down of all possible mapping options for a specific code. If there is a significant volume of codes, it is possible to AutoMap the descriptions in priority order.
 
 For example, if all codes in the CL (Closing) tab appear to be correct, whilst the PY (Prior Year) and OP (Opening) have clear spelling errors, then the AutoMap could be set to ‘CL > OP > PY’ prioritisation order. This will automatically select all available descriptions in the Closing tab first, and if not present defer to the Opening tab, then the Prior tab.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/9%20-%20Automap%20Desc.gif)
 
-Prioritisation order can also be set within an individual tab itself. By default, it is set to take the longest available string in a tab, but it is also possible to select first instance of a string if this is needed. Manual adjustments are also still possible after automapping.
+Prioritisation order can also be set within an individual tab itself. By default, it is set to take the longest available string in a tab, but it is also possible to select first instance of a string if this is needed. Manual adjustments are also still possible after automapping if there is a specific exception to the rule.
 
 When ‘Check & Save Mappings’ is selected, it will automatically flag up blank description selections the same way as in the prefix settings tab. Otherwise, if all selections are made, move on to the COA Regeneration tab.
 
@@ -145,23 +144,23 @@ When ‘Check & Save Mappings’ is selected, it will automatically flag up blan
 
 #  <a name="coa"></a>5.0 – Chart of Accounts Generation:
 ### 5.1 - Pre-requisites to Generate a New COA
-It is only possible to regenerate a chart of accounts if both the Prefix Settings and Description Settings Tabs have both been completed. This is because the data must have had all errors relating to these tabs purged from the trial balance, or this section would regenerate the same errors in the COA and cause inconsistencies when loaded into a financial analyser.
+It is only possible to regenerate a chart of accounts if both the Prefix Settings and Description Settings Tabs have been completed. This is because the data must have had all errors relating to these tabs purged from the trial balance, or this section will regenerate the same errors in the COA and cause inconsistencies when loaded into a financial analyser.
 
 ### 5.2 - Selecting Mapping Sources
-When generating a new COA, it is possible to isolate the potential financial analyser mappings to just its sources files COA data. If this is selected, then it will likely result in a large number of unmapped codes if the original COA was incomplete but is useful in for assuring data consistency for a specific companies’ mappings.
+When generating a new COA, it is possible to isolate the potential mappings to just its sources files COA data. If this is selected, then it will likely result in a large number of unmapped codes if the original COA was incomplete, but is useful for assuring data consistency of a specific companies’ mappings.
 
-Setting ‘Extend mappings to all TBs’ will first search for a code mapping in the source file, and if not found, defer to any other trial balance COA’s that were imported for an alternative mapping. This is particularly useful when all companies are known to use the same mappings across entities, but each files COA was only partially completed.
+Setting ‘Extend mappings to all TBs’ will first search for a code mapping in the source file as in the option above, but if not found, will defer to any other trial balance COA’s that were imported for an alternative mapping. This is particularly useful when all companies are known to use the same mappings across entities, but each files COA only contains codes with movement during the year.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/10%20-%20COA%20Check.gif)
 
 ### 5.3 - Non-standard Mappings
-The original .xlsm template had a limited number of mapping selections to draw from, with deviation of any kind resulting in errors on upload to the financial analyser. When the COA is regenerated and mapped, it will check for any mappings that are not present in the standard selections and add these to the user interface. 
+The original .xlsm template had a limited number of COA mappings to draw from, with deviation of any kind (including case adjustments, spaces etc.) resulting in errors on upload to the dashboard. When the COA is regenerated and mapped, it will check for any mappings that are not standard selections and add these to the GUI.
 
 Approximate mapping is available to correct this should the volume be too excessive to do so manually. For example, if a trial balance include an ‘A1 INTAN. ASSET’ mapping, it would infer from the left string that this should be mapped to ‘A1 – Intangible Assets’. 
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/11%20-%20COA%20Auto-map.gif)
 
-Alternatively, these custom mappings can be maintained, as it was possible to add to the standard mappings field in the original .xlsm template for exceptional circumstances.
+Alternatively, these custom mappings can be maintained, as it is possible to add to the standard mappings field in the original .xlsm template for exceptional circumstances.
 
 Once all non-standard codes are corrected and ‘Check & Save Mappings’ is selected, move on to the Export Data tab.
 
@@ -177,11 +176,11 @@ This tab will display the data input, adjustments made, and output for both the 
 The data can be exported in several formats, including the following:
 
 - Raw TB/COA – Exports the original unedited data (aside from filtering 0 values on import), but consolidated by each period tab.
-- Adjusted TB/COA – Exports the edited data, including the prefixes, updated descriptions, and regenerated COA if available, consolidated by each period tab.
+- Adjusted TB/COA – Exports the edited data, including the prefixes, updated descriptions, and regenerated COA if available, consolidated by each period tab. It is also possible to remove all unmapped COA entries from the export.
 - Detailed Meta TB/COA – Mainly used for assurance testing, exports a file including the hidden columns not normally present in regular exports, showing each stage of a column conversion to flag up any potential errors that occurred.
 
 Select an export directory and export the file, which will be saved as ‘Trial Balance Export.xlsx’. Note that any file in the selected directory with this name will be overwritten. 
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/13%20-%20Excel%20Export.gif)
 
-The export template is saved in .xlsx format for simplicity, as export to .xlsm was considered redundant since it created a dependency on the company template, and the data would normally be manually verified anyway. As such, it would be expected that the .xlsx export simply be copy/pasted into a new .xlsm template after data checks were performed.
+The export template is saved in .xlsx format for simplicity, as exporting directly to the original .xlsm template would create an unecessary dependency when the data can be directly copy/pasted manually.
