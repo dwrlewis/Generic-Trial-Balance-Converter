@@ -17,16 +17,18 @@
 # <a name="overview"></a>1.0 – Overview:
 
 ### 1.1 - Preface
-This program is designed for the checking & correction of financial trial balance data in .xlsm templates. These templates are filled out externally by clients from trial balance data exports, and often contain discrepancies that results in errors aligning the trial balance with its corresponding journal data when loaded into a financial analyser dashboard. This program is designed to thoroughly check through data at all stages, including: 
+This program is designed for the checking & correction of financial trial balance (TB) data in standard .xlsm templates for the purpose of streamlined financial auditing. Clients will export their raw system TB data, and fill out the .xlsm template so that it may be imported into a financial analyser dashboard for auditing. There are often significant errors when a client fills out these templates, which can result in major discrepencies, as the trial balance may not align with its corresponding journal data on a dashboard. This program is designed to thoroughly check through TB data for numerous common errors, including: 
 
-- Preliminary checks for missing key data, missing secondary data, and value fields containing non-numeric entries
-- Standardisation of company naming syntax and prefix/suffixing of account codes
-- Correction of inconsistent descriptions for the same account code
-- Generation of an updated chart of account without duplicates or inconsistencies
-- Remapping of chart of accounts in instances where non-standard mappings are present
-- Export of the data, consolidated into one file if multiple .xlsm files were input
+- Preliminary checks for missing key & secondary data, and value fields containing non-numeric entries
+- Standardisation of company naming syntax and prefixing/suffixing of account codes to isolate by entity
+- Correction of inconsistent account descriptions for the same account code
+- Generation of an updated chart of accounts without duplicates or inconsistencies
+- Remapping of chart of accounts in instances where non-standard template mappings are present
+- Export of the company(s) data, consolidated into one file if multiple .xlsm files were input
 
-Note: The .xlsm files saved here have had all company specific info such as macros and superfluous tabs removed. The program has not been changed to accommodate for this, as both the dummy .xlsm files and original templates can be run without adjustment.
+Note: The files [saved here]() match the format of the .xlsm template this program was designed for, but have been generated from scratch as minimal reproductions.
+
+This is because the original template contained large volumes of macros that were internally designed by the auditing company. As such, the templates provided have been entirely stripped of any company specific info. The program has not been changed to accommodate for this, as both the dummy files provided and original templates can be run without any adjustment.
 
 ### 1.2 - Interpreter Settings
 This program was generated in Python 3.8.0 using the Pycharm IDE with the following interpreter settings:
