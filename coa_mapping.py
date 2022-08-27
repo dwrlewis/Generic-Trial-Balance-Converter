@@ -110,10 +110,11 @@ class CoaConfigure:
         self.load_map = tk.Button(self.load_frame, text='Map Chart of Accounts', command=self.load_coa)
         self.load_map.grid(row=3, column=0, sticky='EW')
         # Warning Frame and Label
-        self.save_warn_frame = tk.Frame(self.top_frame)
-        self.save_warn_frame.grid(row=0, column=1, sticky='NSEW')
-        self.load_warn_label = tk.Label(self.save_warn_frame)
-        self.load_warn_label.grid(row=0, column=0, sticky='W')
+        self.output_frame = tk.Frame(self.top_frame)
+        self.output_frame.grid(row=0, column=1, sticky='NSEW')
+        self.output_frame.rowconfigure(0, weight=1)
+        self.load_warn_label = tk.Label(self.output_frame, justify='left')
+        self.load_warn_label.grid(row=0, column=0, sticky='NSW')
         # endregion
 
         # region ================== 2.0 - Load FSA options ==================
@@ -205,25 +206,20 @@ class CoaConfigure:
         # endregion
 
         # region ================== 4.0 - Save COA Mapping ==================
+        # Save Frame & Button
         self.save_frame = tk.Label(self.top_frame)
         self.save_frame.grid(row=2, column=0, sticky='NSEW')
         self.save_frame.columnconfigure(0, weight=1)
-        # Save FSA mappings Button
         self.save_button = tk.Button(self.save_frame, text='Check & Save Mappings:', height=3, command=self.save_map)
         self.save_button.grid(row=0, column=0, sticky='EW')
-        # Display output errors
-        self.save_warn_frame = tk.Frame(self.top_frame)
-        self.save_warn_frame.grid(row=2, column=1, sticky='NSEW')
-        self.save_warn_frame.columnconfigure(0, weight=1)
-        self.save_warn_frame.rowconfigure(0, weight=1)
-        self.save_warn_label = tk.Label(self.save_warn_frame, text='', anchor='w')
-        self.save_warn_label.grid(row=0, column=0, sticky='NSW')
+        # Warning Frame & Label
+        self.output_frame = tk.Frame(self.top_frame)
+        self.output_frame.grid(row=2, column=1, sticky='NSEW')
+        self.output_frame.columnconfigure(0, weight=1)
+        self.output_frame.rowconfigure(0, weight=1)
+        self.output_label = tk.Label(self.output_frame, text='', anchor='w')
+        self.output_label.grid(row=0, column=0, sticky='NSW')
         # endregion
-
-        # self.disable_children(self.automap_frame)
-        # self.disable_children(self.save_coa_frame)
-        # self.disable_children(self.warning_frame)
-        # self.disable_children(self.can_frame)
 
     # region Generate New COA
     def load_coa(self):
@@ -274,14 +270,17 @@ class CoaConfigure:
             # region 9) Generate canvas GUI if no. of FSA's if below threshold, otherwise set fsa_limit to true
             if len(fsa_flag) == 0:
                 self.fsa_limit = False
-                self.load_warn_label.config(text='New COA generated. No non-standard FSAs found.', fg='#8ace7e')
+                self.load_warn_label.config(text='New COA generated. No non-standard FSAs found.\n'
+                                                 'Proceed to Export Data Tab', fg='#8ace7e')
                 self.main.final_coa = coa.copy()
                 self.main.coa_accepted = True
-                # DISABLE AUTO-MAPPING
+                self.disable_children(self.map_frame)
 
-            elif len(fsa_flag) <= 300:
+            elif len(fsa_flag) <= 200:
                 self.fsa_limit = False
-                # ENABLE AUTOMAPPING
+                self.load_warn_label.config(text=str(len(fsa_flag)) + ' non-standard mappings found, please review.',
+                                            fg='#ffda66')
+                self.enable_children(self.map_frame)
                 for x in fsa_flag:
                     y = fsa_flag.index(x)
                     # Insert non-standard description into entry
@@ -300,8 +299,9 @@ class CoaConfigure:
             else:
                 self.fsa_limit = True
                 self.load_warn_label.config(text='No. of non-standard mappings exceeds ' + str(len(fsa_flag)) +
-                                            ', too large to display. Adjust manually after export.')
-                # DISABLE AUTO-MAPPING
+                                            ', too large to display.\n'
+                                            'Please Save mappings and adjust manually after export.', fg='#ffda66')
+                self.disable_children(self.map_frame)
             # endregion
 
             # region 10) Update GUI code listings for no. of unmapped/irregular mappings
@@ -309,7 +309,6 @@ class CoaConfigure:
             # self.coa_mapped_codes.config(text=coa['FSA Orig. + Ext.'].isna().sum())
             self.result_unmapped.config(text=coa['FSA'].isna().sum())
             self.result_misc.config(text=len(fsa_flag))
-            self.load_warn_label.config(text='New COA generated. No non-standard FSAs found.', fg='#8ace7e')
             # endregion
 
         else:
@@ -371,13 +370,15 @@ class CoaConfigure:
 
         # region 1) Check if new COA has been generated yet
         if self.coa.empty:
-            self.save_warn_label.config(text='Please Map COA, FSAs have not been loaded')
+            self.output_label.config(text='Please Map COA, FSAs have not been loaded', fg='#ffda66')
         # endregion
 
         # region 2) If inconsistent mappings exceeded GUI display limits used new COA with original mappings
         elif self.fsa_limit:
             self.main.final_coa = self.coa.copy()
             self.main.coa_accepted = True
+            self.output_label.config(text='Original COA maintained, unable to manually correct due to GUI limits.',
+                                     fg='#ffda66')
         # endregion
 
         # region 3) If remapping of non-standard codes was selected apply new mappings
@@ -391,21 +392,12 @@ class CoaConfigure:
             # region 3.2) Check if any descriptions have been left unmapped
             row: list
             for row in widget_list:
-                # if len(row[1].get()) == 0:
-                #     error_flag = True
-                #     row[0].config(readonlybackground='#ff684c')
-                # elif row[1].get() in self.fsa_list:
-                #     row[0].config(readonlybackground='#8ace7e')
-                # else:
-                #     row[0].config(readonlybackground='#ffda66')
-                #     minor_flag = True
-
                 fsa = row[1].get()
                 colour = '#ff684c' if len(fsa) == 0 else '#8ace7e' if fsa in self.fsa_list else '#ffda66'
                 if not error_flag:
                     error_flag = True if len(fsa) == 0 else False
                 if not minor_flag:
-                    minor_flag = True if fsa in self.fsa_list else False
+                    minor_flag = True if fsa not in self.fsa_list else False
                 row[0].config(readonlybackground=colour)
             # endregion
 
@@ -418,15 +410,15 @@ class CoaConfigure:
                 final_fsa['FSA Remap'].fillna(final_fsa['FSA'], inplace=True)
                 # Update GUI comment
                 if not minor_flag:
-                    self.save_warn_label.config(text='FSAs saved.', fg='#8ace7e')
+                    self.output_label.config(text='FSAs saved.', fg='#8ace7e')
                 else:
-                    self.save_warn_label.config(text='FSAs saved. NOTE: Non-standard FSAs retained, shown in yellow.',
-                                                fg='#8ace7e')
+                    self.output_label.config(text='FSAs saved. NOTE: Non-standard FSAs retained, shown in yellow.',
+                                             fg='#ffda66')
                 # Update master final COA
                 self.main.final_coa = final_fsa.copy()
                 self.main.coa_accepted = True
             else:
-                self.save_warn_label.config(text='Blank FSA mappings highlighted, please select.')
+                self.output_label.config(text='Blank FSA mappings highlighted, please select.', fg='#ff684c')
                 self.main.coa_accepted = False
             # endregion
         # endregion

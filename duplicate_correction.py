@@ -48,10 +48,12 @@ class DuplicateCorrection:
         # Desc. Warning Frame & Label
         self.on_off_warn_frame = tk.Frame(self.top_frame)
         self.on_off_warn_frame.grid(row=0, column=1, sticky='NSEW')
+        self.on_off_warn_frame.rowconfigure(0, weight=1)
         self.on_off_warn_label = tk.Label(self.on_off_warn_frame, fg='#8ace7e',
                                           text='Descriptions will not be adjusted. COA cannot be generated without\n'
-                                               ' checking descriptions, raw COA will be exported instead.')
-        self.on_off_warn_label.grid(row=0, column=0, sticky='W')
+                                               'checking descriptions, raw COA will be exported instead.',
+                                          justify='left')
+        self.on_off_warn_label.grid(row=0, column=0, sticky='NSW')
         # endregion
 
         # region ================== 2.0 - Options Frame ==================
@@ -170,10 +172,11 @@ class DuplicateCorrection:
         self.save_frame.columnconfigure(0, weight=1)
         self.save_button = tk.Button(self.save_frame, text='Check & Save Mappings:', height=3, command=self.map_desc)
         self.save_button.grid(row=0, column=0, sticky='EW')
-        # Output Frame & Label
+        # Warning Frame & Label
         self.output_frame = tk.Frame(self.top_frame)
         self.output_frame.grid(row=2, column=1, sticky='NSEW')
         self.output_frame.columnconfigure(0, weight=1)
+        self.output_frame.rowconfigure(0, weight=1)
         self.output_label = tk.Label(self.output_frame, text='', anchor='w')
         self.output_label.grid(row=0, column=0, sticky='NSW')
         # endregion
@@ -184,7 +187,7 @@ class DuplicateCorrection:
     # region Enable/Disable Canvas Functions
     def enable_canvas(self):
         self.main.desc_on = True
-        self.on_off_warn_label.config(text='Please adjust formatting options and Check Descriptions')
+        self.on_off_warn_label.config(text='Please adjust formatting options and Check Descriptions', fg='#ffda66')
         self.enable_children(self.join_frame)
 
     def enable_children(self, parent):

@@ -43,9 +43,10 @@ class PrefixOptions:
         # Warning Frame & Label
         self.on_off_warn_frame = tk.Frame(self.top_frame)
         self.on_off_warn_frame.grid(row=0, column=1, sticky='NSEW')
+        self.on_off_warn_frame.rowconfigure(0, weight=1)
         self.on_off_warn_label = tk.Label(self.on_off_warn_frame, text='Prefixes not selected. Codes & Companies '
-                                                                       'will be exported as is.')
-        self.on_off_warn_label.grid(row=0, column=0)
+                                                                       'will be exported as is.', justify='left')
+        self.on_off_warn_label.grid(row=0, column=0, sticky='NSW')
         # endregion
 
         # region ================== 2.0 - Options Frame ==================
@@ -230,14 +231,12 @@ class PrefixOptions:
         # endregion
 
         #  region ================== 4.0 - Check/Load Prefixes ==================
+        # Save Frame & Button
         self.save_frame = tk.Frame(self.top_frame)
         self.save_frame.grid(row=2, column=0, sticky='NSEW')
         self.save_frame.columnconfigure(0, weight=1)
-        # Check & Save Button
-        self.save_button = tk.Button(self.save_frame, text='Check & Save Mappings:', height=3,
-                                     command=self.map_prefixes)
+        self.save_button = tk.Button(self.save_frame, text='Check & Save Mappings:', height=3, command=self.map_prefixes)
         self.save_button.grid(row=0, column=0, sticky='EW')
-        self.save_button.columnconfigure(0, weight=1)
         # Warning Frame & Label
         self.output_frame = tk.Frame(self.top_frame)
         self.output_frame.grid(row=2, column=1, sticky='NSEW')
@@ -247,12 +246,6 @@ class PrefixOptions:
         self.output_label.grid(row=0, column=0, sticky='NSW')
         # endregion
 
-        # Disable elements initially
-        # self.disable_children(self.options_frame)
-        # self.disable_children(self.head_can)
-        # self.disable_children(self.load_frame)
-        # self.disable_children(self.load_frame_2)
-
     # region Enable/Disable widgets
     def enable_canvas(self):
         # Generate canvas widgets from companies imported, add warning if above suggested limit
@@ -260,7 +253,7 @@ class PrefixOptions:
         if len(companies) > 150:
             self.on_off_warn_label.config(
                 text='Warning: ' + str(len(companies)) + ' companies in data. Volumes this large may be impractical\n'
-                     ' to prefix manually due to GUI limits. Advise automapping or importing less files.', fg='#ffda66')
+                     'to prefix manually due to GUI limits. Advise automapping or importing less files.', fg='#ffda66')
         else:
             self.on_off_warn_label.config(text='Please add Comp./Prefix mappings then press Check & Save Mappings.',
                                           fg='#ffda66')
