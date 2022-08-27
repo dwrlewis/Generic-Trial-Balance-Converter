@@ -113,7 +113,7 @@ When inputting the prefix, dividers should not be added manually. For example, �
 For example, setting a prefix to ‘ALPHA’, maintaing prefix format, and the delimiter as a ‘__’, will result in the output codes like ‘ALPHA__1000’.
 
 ### 3.4 - Large Company Volumes
-In instances where the number of companies are excessively large (>150) a warning flag will be added to the GUI advising the use of automapping. Extremely large numbers of companies can cause the GUI of tkinter to become impactically slow due to the number of widgets generated. In these instances it is advised to perform corrections one file at a time.
+More that 50 entities in a file batch are considered a rarity in the data this program was designed for. However, in instances where the number of companies are excessively large (>150) a warning flag will be added to the GUI advising the use of automapping or importing files for correction individually.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/672c15887f95623cfec875682f37be47fa257c3f/Readme%20Images/Prefix%20Limit.png)
 
@@ -127,7 +127,7 @@ When all mappings are confirmed, move to the ‘Description Settings’ tab.
 
 #  <a name="desc"></a>4.0 – Description Settings:
 
-### 4.1 - Selecting Company & Prefix Corrections
+### 4.1 - Selecting Description Corrections
 Similar to the prefix tab, inconsistent descriptions do not have to be corrected, but generating a new COA is dependent on both the completion of the prefix tab as well as this section to prevent generating duplicate codes. Selecting yes enables the ‘Check Descriptions’ Menu.
 
 When checking for account codes with inconsistent descriptions, it is also possible to reduce the number of inconsistencies using the options. If there is a high volume of inconsistent descriptions, this can be corrected by trimming descriptions, as well as adjusting their formatting to lower or upper case since this is common formatting issue between tabs. Title case is not available due to the unpredictable impact of special characters on this function.
@@ -147,20 +147,26 @@ Prioritisation order can also be set within an individual tab itself. By default
 
 When ‘Check & Save Mappings’ is selected, it will automatically flag up blank description selections the same way as in the prefix settings tab. Otherwise, if all selections are made, move on to the COA Regeneration tab.
 
+### 4.3 - Large Volume of Inconsistent Descriptions
+Much like with prefixes, a large volume of descriptions (>300) will be flagged up. Unlike with companies where large volumes are rare, the interface for descriptions has been set to disable its canvas display, as large volumes usually indicates an entire tab of data has different descriptions to another tab. For TB files with thousands of lines this can easily overwhelm the GUI limits from widget generation.
+
+However, whilst the canvas display is disabled, it is still possible to prioritise by tab for automapping. As such, the file will need to be manually reviewed to determine which tab should be prioritised. Auto-mapping and saving otherwise works as normal.
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/4096d70d4975b67f2ccfcde735dc50a587060e79/Readme%20Images/Desc%20Limit.png)
 
 
 #  <a name="coa"></a>5.0 – Chart of Accounts Generation:
 ### 5.1 - Pre-requisites to Generate a New COA
 It is only possible to regenerate a chart of accounts if both the Prefix Settings and Description Settings Tabs have been completed. This is because the data must have had all errors relating to these tabs purged from the trial balance, or this section will regenerate the same errors in the COA and cause inconsistencies when loaded into a financial analyser.
 
-### 5.2 - Selecting Mapping Sources
+### 5.2 - Selecting COA Mapping Sources
 When generating a new COA, it is possible to isolate the potential mappings to just its sources files COA data. If this is selected, then it will likely result in a large number of unmapped codes if the original COA was incomplete, but is useful for assuring data consistency of a specific companies’ mappings.
 
 Setting ‘Extend mappings to all TBs’ will first search for a code mapping in the source file as in the option above, but if not found, will defer to any other trial balance COA’s that were imported for an alternative mapping. This is particularly useful when all companies are known to use the same mappings across entities, but each files COA only contains codes with movement during the year.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/10%20-%20COA%20Check.gif)
 
-### 5.3 - Non-standard Mappings
+### 5.3 - Non-standard COA Mappings
 The original .xlsm template had a limited number of COA mappings to draw from, with deviation of any kind (including case adjustments, spaces etc.) resulting in errors on upload to the dashboard. When the COA is regenerated and mapped, it will check for any mappings that are not standard selections and add these to the GUI.
 
 Approximate mapping is available to correct this should the volume be too excessive to do so manually. For example, if a trial balance include an ‘A1 INTAN. ASSET’ mapping, it would infer from the left string that this should be mapped to ‘A1 – Intangible Assets’. 
@@ -171,14 +177,23 @@ Alternatively, these custom mappings can be maintained, as it is possible to add
 
 Once all non-standard codes are corrected and ‘Check & Save Mappings’ is selected, move on to the Export Data tab.
 
+### 5.4 - Excessive Non-standard COA Mappings
+As with prefixes and descriptions, inconsistent COA mappings also have a GUI limit (<200) in place. Given that there is only a small volume of possible COA mappings, anything greater than this indicates that a client has not refered to the standard mappings and instead filled out the template manually. In these instances none of the inconsistent mappings can be corrected as the current script is reliant on pulling directly from the canvas GUI selections.
 
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/4096d70d4975b67f2ccfcde735dc50a587060e79/Readme%20Images/COA%20Limit.png)
 
 #  <a name="export"></a>6.0 – Export Data:
 
 ### 6.1 - Review Data
 This tab will display the data input, adjustments made, and output for both the trial balance data and chart of accounts. If any sections have not been completed this will be flagged up accordingly.
 
+1) Example of data where all corrections have been performed
+
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/1126ee3117ba405bcaa80dcd7ed60f6c25758c2c/Readme%20Gifs/12%20-%20Review%20Checking%20v2.gif)
+
+2) Example of data where descriptions have not been checked for duplicates, so a new COA has not been generated
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/4096d70d4975b67f2ccfcde735dc50a587060e79/Readme%20Images/Incomplete%20Review.png)
 
 The data can be exported in several formats, including the following:
 
