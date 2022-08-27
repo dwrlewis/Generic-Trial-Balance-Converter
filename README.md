@@ -28,7 +28,7 @@ Typically, audit clients will perform an export of their raw system TB data, and
 - Remapping of chart of accounts in instances where non-standard template mappings are present
 - Export of the company(s) data, consolidated into one file if multiple .xlsm files were input
 
-**NOTE:** The files [saved here](https://github.com/dwrlewis/Trial-Balance-Converter/tree/master/Test%20Files) match the format of the .xlsm template this program was designed for, but are minimum reproductions. This is because the original template contains a large number of macros that were created internally by BDO LLP. As such, the templates provided have been entirely stripped of any company specific info. The program did not need adjusting to accommodate for this, as both the dummy files provided and original templates can be run without any adjustment.
+**NOTE:** The files [saved here](https://github.com/dwrlewis/Trial-Balance-Converter/tree/master/Test%20Files) match the format of the .xlsm template this program was designed for, but are minimum reproductions. This is because the original template contains a large number of macros that were created internally by BDO LLP. As such, the templates provided have been entirely stripped of any company specific info. The program did not need adjusting to accommodate for this, as the only dependency is the naming of the column headers and tab names.
 
 ### 1.2 - Interpreter Settings
 This program was generated in Python 3.8.0 using the Pycharm IDE with the following interpreter settings:
@@ -112,7 +112,12 @@ When inputting the prefix, dividers should not be added manually. For example, �
 
 For example, setting a prefix to ‘ALPHA’, maintaing prefix format, and the delimiter as a ‘__’, will result in the output codes like ‘ALPHA__1000’.
 
-### 3.4 - Saving Mappings
+### 3.4 - Large Company Volumes
+In instances where the number of companies are excessively large (>150) a warning flag will be added to the GUI advising the use of automapping. Extremely large numbers of companies can cause the GUI of tkinter to become impactically slow due to the number of widgets generated. In these instances it is advised to perform corrections one file at a time.
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/672c15887f95623cfec875682f37be47fa257c3f/Readme%20Images/Prefix%20Limit.png)
+
+### 3.5 - Saving Mappings
 When all mappings have been filled out, pressing ‘Check & Save Mappings:’ will either mark all fields in green if filled out correctly, or flag up an empty field. Adding prefixes is not mandatory for all companies, and will only flag up a warning, but remapping company names must be completed to flag this section as complete. 
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/7%20-%20Saving%20Mappings%20v2.gif)
