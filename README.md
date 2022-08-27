@@ -1,16 +1,16 @@
 ﻿# Trial Balance Converter Readme
 # Contents
-[1.0 – Overview](#overview)
+## [1.0 – Overview](#overview)
 
-[2.0 – Import Selection](#import)
+## [2.0 – Import Selection](#import)
 
-[3.0 – Prefix Settings](#prefix)
+## [3.0 – Prefix Settings](#prefix)
 
-[4.0 – Description Settings](#desc)
+## [4.0 – Description Settings](#desc)
 
-[5.0 – Chart of Accounts Generation](#coa)
+## [5.0 – Chart of Accounts Generation](#coa)
 
-[6.0 – Export Data](#export)
+## [6.0 – Export Data](#export)
 
 
 # <a name="overview"></a>1.0 – Overview:
@@ -52,9 +52,9 @@ The User Interface opens in the Import Selection tab. Select the import director
 
 The data to import can be selected down to the individual tabs. For example, one file may have its Prior, Closing and COA imported, whilst another may only have a Closing imported. 
 
-![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/122afb7b9c98e57406c37bdbac849a3f104898aa/Readme%20Gifs/1%20-%20Tab%20Selection.gif)
-
 The header columns are also selectable buttons to enable/disable the import for an entire tab set, as are the Filenames which enable/disables the import for that particular file.
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/122afb7b9c98e57406c37bdbac849a3f104898aa/Readme%20Gifs/1%20-%20Tab%20Selection.gif)
 
 The Filter Null Amounts option is designed for unusually large system exports containing every possible code in a system, even ones that have seen no movement. As such, this can be used to remove all irrelevant trial balance lines for each period, reducing both load time and redundant error flags.
 
@@ -70,16 +70,14 @@ Hovering over a particular cell containing an error will display a list of all t
 
 Once the data imported data has been deemed adequate, move to the Prefix Settings tab of the user interface.
 
-[INSERT IMAGE]
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/2%20-%20Tab%20Error%20Checking.gif)
 
 
 # <a name="prefix"></a>3.0 – Prefix Settings:
 ## Selecting Company & Prefix Corrections
-The prefix settings tab is the first set of corrections to make to a trial balance. In the top left of this tab, there is a selection for this option. Note that whilst it is not mandatory to perform these checks, not doing so will disable any Description Settings that can be made in the next tab.
+The prefix settings tab is the first set of corrections to make to a trial balance. In the top left of this tab, there is a selection for this option. Note that whilst it is not mandatory to perform these checks, not doing so will disable the setting to generate a new TB.
 
 Once the selection is made, it will generate a list of all unique company names found across all imported data files in the interface. This is intended to flag inconsistencies in how companies have been entered across different tabs and files. For example, “Alpha Company Limited” might be entered as “Alpha Ltd” in a different tab of data, which would cause alignment errors when loaded into a financial analyser dashboard.
-
-[INSERT IMAGE]
 
 The user interface here effectively serves the same role as an excel style mapping document. The ‘New Comp. Mappings’ field is what the companies will be renamed as in the export, whilst the ‘Prefix/Suffix’ field will be added to all account codes for that respective company.
 
@@ -90,31 +88,39 @@ Both the ‘New Comp. Mappings’ and ‘Prefix/Suffix’ headers can be selecte
 By default, the Automap Column(s) function is set to use the whole string but can also be adjusted to draw from the left, mid, or right of the Imported Company field in the same way as excel. 
 
 There are also casing adjustments for Upper, Lower, and Title, as well as trimming whitespace from the field, and a replace function that can be limited by casings.
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/3%20-%20Company%20Format%20Map%20+%20Substring.gif)
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/4%20-%20Company%20Replace.gif)
+
 ## Prefix/Suffix Formatting Options
 When inputting the prefix, dividers should not be added here. For example, ‘Company Alpha’ should have its prefix input as ‘ALPHA’ rather than ‘ALPHA\_’. The divider is instead set in the bottom left section of the options, should one be needed. It is also possible to set the formatting to suffixes instead. An example of the format of the outputted codes is also displayed here.
 
-[INSERT IMAGE]
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/6%20-%20Prefix%20Divider%20v2.gif)
+
 ## Saving Mappings
 When all mappings have been filled out, pressing ‘Check & Save Mappings:’ will either mark all fields in green if filled out correctly, or flag up an empty field. Adding prefixes is not mandatory, and will only flag up a warning, but remapping companies must be completed to flag this section as complete. 
 
 When all mappings are confirmed, move to the ‘Description Settings’ tab.
 
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/7%20-%20Saving%20Mappings%20v2.gif)
 
 #  <a name="desc"></a>4.0 – Description Settings:
 ## Selecting Company & Prefix Corrections
 Similarly, to the prefixes tab, inconsistent descriptions do not have to be corrected, but this tab is dependent on the completion of the prefix settings tab. Selecting yes enable the Check Descriptions Menu.
 
-When checking for account codes with inconsistent descriptions, it is possible to reduce the number of inconsistencies by trimming descriptions, as well as adjusting their formatting to lower or upper case. Title case is not available due to the impact of special characters on this function.
+When checking for account codes with inconsistent descriptions, it is also possible to reduce the number of inconsistencies by trimming descriptions, as well as adjusting their formatting to lower or upper case. Title case is not available due to the impact of special characters on this function.
 
-[INSERT IMAGE]
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/8%20-%20Load%20Descs%20and%20manual%20map.gif)
 
 When ‘Check Descriptions’ is pressed, a list of account codes and their description options will be generated. If none or present, a notification will pop up prompting to move to the COA Regeneration tab. Otherwise, the number of inconsistent code descriptions will be shown.
+
 ## Automapping Descriptions
 The Descriptions column contains a drop down containing all of the possible mapping options for a specific code. If there is a significant volume of codes, it is possible to AutoMap the descriptions in priority order.
 
-[INSERT IMAGE]
-
 For example, if all codes in the CL (Closing) tab appear to be correct, whilst the PY (Prior Year) and OP (Opening) have clear spelling errors, then the AutoMap could be set to ‘CL > OP > PY’ prioritisation order. This will automatically select all available descriptions in the Closing tab first, and if not present defer to the Opening tab, then the Prior tab.
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/9%20-%20Automap%20Desc.gif)
 
 Prioritisation order can also be set within an individual tab itself. By default, it is set to take the longest available string in a tab, but it is also possible to select first instance of a string if this is needed. Manual adjustments are also still possible after automapping.
 
@@ -129,11 +135,14 @@ When generating a new COA, it is possible to isolate the potential financial ana
 
 Setting ‘Extend mappings to all TBs’ will first search for a code mapping in the source file, and if not found, defer to any other trial balance COA’s that were imported for an alternative mapping. This is particularly useful when all companies are known to use the same mappings across entities, but each files COA was only partially completed.
 
-[INSERT IMAGE]
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/10%20-%20COA%20Check.gif)
+
 ## Non-standard Mappings
 The original .xlsm template had a limited number of mapping selections to draw from, with deviation of any kind resulting in errors on upload to the financial analyser. When the COA is regenerated and mapped, it will check for any mappings that are not present in the standard selections and add these to the user interface. 
 
 Approximate mapping is available to correct this should the volume be too excessive to do so manually. For example, if a trial balance include an ‘A1 INTAN. ASSET’ mapping, it would infer from the left string that this should be mapped to ‘A1 – Intangible Assets’. 
+
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/11%20-%20COA%20Auto-map.gif)
 
 Alternatively, these custom mappings can be maintained, as it was possible to add to the standard mappings field in the original .xlsm template for exceptional circumstances.
 
@@ -144,6 +153,8 @@ Once all non-standard codes are corrected and ‘Check & Save Mappings’ is sel
 ## Review Data
 This tab will display the data input, adjustments made, and output for both the trial balance data and chart of accounts. If any sections have not been completed this will be flagged up accordingly.
 
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/1126ee3117ba405bcaa80dcd7ed60f6c25758c2c/Readme%20Gifs/12%20-%20Review%20Checking%20v2.gif)
+
 The data can be exported in several formats, including the following:
 
 - Raw TB/COA – Exports the original unedited data (aside from filtering 0 values on import), but consolidated by each period tab.
@@ -152,6 +163,6 @@ The data can be exported in several formats, including the following:
 
 Select an export directory and export the file, which will be saved as ‘Trial Balance Export.xlsx’. Note that any file in the selected directory with this name will be overwritten. 
 
-[INSERT IMAGE]
+![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/13%20-%20Excel%20Export.gif)
 
 The export template is saved in .xlsx format for simplicity, as export to .xlsm was considered redundant since it created a dependency on the company template, and the data would normally be manually verified anyway. As such, it would be expected that the .xlsx export simply be copy/pasted into a new .xlsm template after data checks were performed.
