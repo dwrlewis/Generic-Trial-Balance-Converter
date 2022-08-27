@@ -1,19 +1,19 @@
 ﻿# Trial Balance Converter Readme
 # Contents
-[1.0 – Overview:	2](#_Toc111671708)
+[1.0 – Overview](#overview)
 
-[2.0 – Import Selection:	3](#_Toc111671711)
+[2.0 – Import Selection:	3](#import)
 
-[3.0 – Prefix Settings:	4](#_Toc111671714)
+[3.0 – Prefix Settings:	4](#prefix)
 
-[4.0 – Description Settings:	5](#_Toc111671719)
+[4.0 – Description Settings:	5](#desc)
 
-[5.0 – Chart of Accounts Generation:	6](#_Toc111671722)
+[5.0 – Chart of Accounts Generation:	6](#coa)
 
-[6.0 – Export Data:	7](#_Toc111671726)
+[6.0 – Export Data:	7](#export)
 
 
-# 1.0 – Overview:
+# <a name="overview"></a>1.0 – Overview:
 
 ## Preface
 This program is designed for the checking & correction of financial trial balance data in .xlsm templates. These templates are filled out externally by clients from trial balance data exports, and often contain discrepancies that results in errors aligning the trial balance with its corresponding journal data when loaded into a financial analyser dashboard. This program is designed to thoroughly check through data at all stages, including: 
@@ -44,7 +44,7 @@ This program was generated in Python 3.8.0 using the Pycharm IDE with the follow
 |Wheel|0.36.2|
 
 
-# 2.0 – Import Selection:
+# <a name="import"></a>2.0 – Import Selection:
 ## File Path & Import
 The converter can be used for checking and correction of an individual .xlsm template or multiple simultaneously, the latter of which will result in all data being consolidated into a single file for export.
 
@@ -73,7 +73,7 @@ Once the data imported data has been deemed adequate, move to the Prefix Setting
 [INSERT IMAGE]
 
 
-# 3.0 – Prefix Settings:
+# <a name="prefix"></a>3.0 – Prefix Settings:
 ## Selecting Company & Prefix Corrections
 The prefix settings tab is the first set of corrections to make to a trial balance. In the top left of this tab, there is a selection for this option. Note that whilst it is not mandatory to perform these checks, not doing so will disable any Description Settings that can be made in the next tab.
 
@@ -100,7 +100,7 @@ When all mappings have been filled out, pressing ‘Check & Save Mappings:’ wi
 When all mappings are confirmed, move to the ‘Description Settings’ tab.
 
 
-# 4.0 – Description Settings:
+#  <a name="desc"></a>4.0 – Description Settings:
 ## Selecting Company & Prefix Corrections
 Similarly, to the prefixes tab, inconsistent descriptions do not have to be corrected, but this tab is dependent on the completion of the prefix settings tab. Selecting yes enable the Check Descriptions Menu.
 
@@ -121,7 +121,7 @@ Prioritisation order can also be set within an individual tab itself. By default
 When ‘Check & Save Mappings’ is selected, it will automatically flag up blank description selections the same way as in the prefix settings tab. Otherwise, if all selections are made, move on to the COA Regeneration tab.
 
 
-# 5.0 – Chart of Accounts Generation:
+#  <a name="coa"></a>5.0 – Chart of Accounts Generation:
 ## Pre-requisites to Generate a New COA
 It is only possible to regenerate a chart of accounts if both the Prefix Settings and Description Settings Tabs have both been completed. This is because the data must have had all errors relating to these tabs purged from the trial balance, or this section would regenerate the same errors in the COA and cause inconsistencies when loaded into a financial analyser.
 ## Selecting Mapping Sources
@@ -140,7 +140,7 @@ Alternatively, these custom mappings can be maintained, as it was possible to ad
 Once all non-standard codes are corrected and ‘Check & Save Mappings’ is selected, move on to the Export Data tab.
 
 
-# 6.0 – Export Data:
+#  <a name="export"></a>6.0 – Export Data:
 ## Review Data
 This tab will display the data input, adjustments made, and output for both the trial balance data and chart of accounts. If any sections have not been completed this will be flagged up accordingly.
 
