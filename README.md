@@ -16,7 +16,7 @@
 
 # <a name="overview"></a>1.0 – Overview:
 
-## 1.1 - Preface
+### 1.1 - Preface
 This program is designed for the checking & correction of financial trial balance data in .xlsm templates. These templates are filled out externally by clients from trial balance data exports, and often contain discrepancies that results in errors aligning the trial balance with its corresponding journal data when loaded into a financial analyser dashboard. This program is designed to thoroughly check through data at all stages, including: 
 
 - Preliminary checks for missing key data, missing secondary data, and value fields containing non-numeric entries
@@ -28,7 +28,7 @@ This program is designed for the checking & correction of financial trial balanc
 
 Note: The .xlsm files saved here have had all company specific info such as macros and superfluous tabs removed. The program has not been changed to accommodate for this, as both the dummy .xlsm files and original templates can be run without adjustment.
 
-## 1.2 - Interpreter Settings
+### 1.2 - Interpreter Settings
 This program was generated in Python 3.8.0 using the Pycharm IDE with the following interpreter settings:
 
 |***Package***|***Version***|
@@ -48,7 +48,7 @@ This program was generated in Python 3.8.0 using the Pycharm IDE with the follow
 
 # <a name="import"></a>2.0 – Import Selection:
 
-## 2.1 - File Path & Import
+### 2.1 - File Path & Import
 The converter can be used for checking and correction of an individual .xlsm template or multiple simultaneously, the latter of which will result in all data being consolidated into a single file for export.
 
 The User Interface opens in the Import Selection tab. Select the import directory in the top left of this tab, which will automatically display a list of .xlsm files in the selected path.
@@ -62,7 +62,8 @@ The header columns are also selectable buttons to enable/disable the import for 
 The Filter Null Amounts option is designed for unusually large system exports containing every possible code in a system, even ones that have seen no movement. As such, this can be used to remove all irrelevant trial balance lines for each period, reducing both load time and redundant error flags.
 
 Once selections are made, Load Trial Balances can be selected in the bottom left.
-## 2.2 - Import Results and Error Flags
+
+### 2.2 - Import Results and Error Flags
 Once all the files in the selected folder have been checked, the user interface colours will update to display any immediate errors it may have flagged in a specific tab of a dataset:
 
 - Green highlights mean that there were no errors found in the data tab.
@@ -79,7 +80,7 @@ Once the data imported data has been deemed adequate, move to the Prefix Setting
 
 # <a name="prefix"></a>3.0 – Prefix Settings:
 
-## 3.1 - Selecting Company & Prefix Corrections
+### 3.1 - Selecting Company & Prefix Corrections
 The prefix settings tab is the first set of corrections to make to a trial balance. In the top left of this tab, there is a selection for this option. Note that whilst it is not mandatory to perform these checks, not doing so will disable the setting to generate a new TB.
 
 Once the selection is made, it will generate a list of all unique company names found across all imported data files in the interface. This is intended to flag inconsistencies in how companies have been entered across different tabs and files. For example, “Alpha Company Limited” might be entered as “Alpha Ltd” in a different tab of data, which would cause alignment errors when loaded into a financial analyser dashboard.
@@ -88,7 +89,7 @@ The user interface here effectively serves the same role as an excel style mappi
 
 New mappings can be entered manually the same as in an excel, but it is also possible to automatically map data using the options on the left of the user interface. This is a more viable alternative for large numbers of companies.
 
-## 3.2 - Additional Options
+### 3.2 - Additional Options
 Both the ‘New Comp. Mappings’ and ‘Prefix/Suffix’ headers can be selected the same way as column selection in excel, which turns the border green and allows options adjustments to be applied.
 
 By default, the Automap Column(s) function is set to use the whole string but can also be adjusted to draw from the left, mid, or right of the Imported Company field in the same way as excel. 
@@ -99,12 +100,12 @@ There are also casing adjustments for Upper, Lower, and Title, as well as trimmi
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/4%20-%20Company%20Replace.gif)
 
-## 3.3 - Prefix/Suffix Formatting Options
+### 3.3 - Prefix/Suffix Formatting Options
 When inputting the prefix, dividers should not be added here. For example, ‘Company Alpha’ should have its prefix input as ‘ALPHA’ rather than ‘ALPHA\_’. The divider is instead set in the bottom left section of the options, should one be needed. It is also possible to set the formatting to suffixes instead. An example of the format of the outputted codes is also displayed here.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/6%20-%20Prefix%20Divider%20v2.gif)
 
-## 3.4 - Saving Mappings
+### 3.4 - Saving Mappings
 When all mappings have been filled out, pressing ‘Check & Save Mappings:’ will either mark all fields in green if filled out correctly, or flag up an empty field. Adding prefixes is not mandatory, and will only flag up a warning, but remapping companies must be completed to flag this section as complete. 
 
 When all mappings are confirmed, move to the ‘Description Settings’ tab.
@@ -115,7 +116,7 @@ When all mappings are confirmed, move to the ‘Description Settings’ tab.
 
 #  <a name="desc"></a>4.0 – Description Settings:
 
-## 4.1 - Selecting Company & Prefix Corrections
+### 4.1 - Selecting Company & Prefix Corrections
 Similarly, to the prefixes tab, inconsistent descriptions do not have to be corrected, but this tab is dependent on the completion of the prefix settings tab. Selecting yes enable the Check Descriptions Menu.
 
 When checking for account codes with inconsistent descriptions, it is also possible to reduce the number of inconsistencies by trimming descriptions, as well as adjusting their formatting to lower or upper case. Title case is not available due to the impact of special characters on this function.
@@ -124,7 +125,7 @@ When checking for account codes with inconsistent descriptions, it is also possi
 
 When ‘Check Descriptions’ is pressed, a list of account codes and their description options will be generated. If none or present, a notification will pop up prompting to move to the COA Regeneration tab. Otherwise, the number of inconsistent code descriptions will be shown.
 
-## 4.2 - Automapping Descriptions
+### 4.2 - Automapping Descriptions
 The Descriptions column contains a drop down containing all of the possible mapping options for a specific code. If there is a significant volume of codes, it is possible to AutoMap the descriptions in priority order.
 
 For example, if all codes in the CL (Closing) tab appear to be correct, whilst the PY (Prior Year) and OP (Opening) have clear spelling errors, then the AutoMap could be set to ‘CL > OP > PY’ prioritisation order. This will automatically select all available descriptions in the Closing tab first, and if not present defer to the Opening tab, then the Prior tab.
@@ -138,17 +139,17 @@ When ‘Check & Save Mappings’ is selected, it will automatically flag up blan
 
 
 #  <a name="coa"></a>5.0 – Chart of Accounts Generation:
-## 5.1 - Pre-requisites to Generate a New COA
+### 5.1 - Pre-requisites to Generate a New COA
 It is only possible to regenerate a chart of accounts if both the Prefix Settings and Description Settings Tabs have both been completed. This is because the data must have had all errors relating to these tabs purged from the trial balance, or this section would regenerate the same errors in the COA and cause inconsistencies when loaded into a financial analyser.
 
-## 5.2 - Selecting Mapping Sources
+### 5.2 - Selecting Mapping Sources
 When generating a new COA, it is possible to isolate the potential financial analyser mappings to just its sources files COA data. If this is selected, then it will likely result in a large number of unmapped codes if the original COA was incomplete but is useful in for assuring data consistency for a specific companies’ mappings.
 
 Setting ‘Extend mappings to all TBs’ will first search for a code mapping in the source file, and if not found, defer to any other trial balance COA’s that were imported for an alternative mapping. This is particularly useful when all companies are known to use the same mappings across entities, but each files COA was only partially completed.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/bf7c082b04f5f71307396d05791e142afc4eea9c/Readme%20Gifs/10%20-%20COA%20Check.gif)
 
-## 5.3 - Non-standard Mappings
+### 5.3 - Non-standard Mappings
 The original .xlsm template had a limited number of mapping selections to draw from, with deviation of any kind resulting in errors on upload to the financial analyser. When the COA is regenerated and mapped, it will check for any mappings that are not present in the standard selections and add these to the user interface. 
 
 Approximate mapping is available to correct this should the volume be too excessive to do so manually. For example, if a trial balance include an ‘A1 INTAN. ASSET’ mapping, it would infer from the left string that this should be mapped to ‘A1 – Intangible Assets’. 
@@ -163,7 +164,7 @@ Once all non-standard codes are corrected and ‘Check & Save Mappings’ is sel
 
 #  <a name="export"></a>6.0 – Export Data:
 
-## 6.1 - Review Data
+### 6.1 - Review Data
 This tab will display the data input, adjustments made, and output for both the trial balance data and chart of accounts. If any sections have not been completed this will be flagged up accordingly.
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/1126ee3117ba405bcaa80dcd7ed60f6c25758c2c/Readme%20Gifs/12%20-%20Review%20Checking%20v2.gif)
