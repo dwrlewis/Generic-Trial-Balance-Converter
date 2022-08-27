@@ -17,7 +17,9 @@
 # <a name="overview"></a>1.0 – Overview:
 
 ### 1.1 - Preface
-This program was designed for the checking & correction of financial trial balance (TB) data in .xlsm files for the purpose of financial auditing. Clients would export their raw system TB data, and fill out the standard .xlsm template so that it may be imported into a dashboard for auditing. There were often significant errors when a client filled out these templates, which could result in major discrepencies, as the trial balance would not align with its corresponding journal data on a dashboard. This program was designed to thoroughly check through TB data and rapidly correct numerous common errors, including: 
+This program is designed for the checking & correction of financial trial balance (TB) data in .xlsm files for the purpose of financial auditing. It is currently being considered by BDO LLP for integration into the data analytics audit process. However, it should be noted that this program has been developed entirely independent of the company outside of business hours, and adapted to the specific TB template of this company using manually generated dummy data.
+
+Typically, audit clients will perform an export of their raw system TB data, and fill out the standard audit .xlsm template so that it may be imported into a dashboard. There are often significant errors when a client fills out these templates, which can result in major discrepencies such as the TB data not aligning with its corresponding journal data on a dashboard. This program is designed to thoroughly check through TB data and rapidly correct numerous common errors, including: 
 
 - Preliminary checks for missing key & secondary data, and value fields containing non-numeric entries
 - Standardisation of company naming syntax and prefixing/suffixing of account codes to isolate by entity
@@ -26,7 +28,7 @@ This program was designed for the checking & correction of financial trial balan
 - Remapping of chart of accounts in instances where non-standard template mappings are present
 - Export of the company(s) data, consolidated into one file if multiple .xlsm files were input
 
-**NOTE:** The files [saved here](https://github.com/dwrlewis/Trial-Balance-Converter/tree/master/Test%20Files) match the format of the .xlsm template this program was designed for, but are minimum reproductions. This is because the original template contained a large number of macros that were internally designed by the auditing company. As such, the templates provided have been entirely stripped of any company specific info. The program has not been changed to accommodate for this, as both the dummy files provided and original templates can be run without any adjustment.
+**NOTE:** The files [saved here](https://github.com/dwrlewis/Trial-Balance-Converter/tree/master/Test%20Files) match the format of the .xlsm template this program was designed for, but are minimum reproductions. This is because the original template contains a large number of macros that were created internally by BDO LLP. As such, the templates provided have been entirely stripped of any company specific info. The program did not need adjusting to accommodate for this, as both the dummy files provided and original templates can be run without any adjustment.
 
 ### 1.2 - Interpreter Settings
 This program was generated in Python 3.8.0 using the Pycharm IDE with the following interpreter settings:
