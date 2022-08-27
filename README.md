@@ -26,7 +26,7 @@ This program was designed for the checking & correction of financial trial balan
 - Remapping of chart of accounts in instances where non-standard template mappings are present
 - Export of the company(s) data, consolidated into one file if multiple .xlsm files were input
 
-**Note:** The files [saved here]() match the format of the .xlsm template this program was designed for, but are minimum reproductions. This is because the original template contained a large number of macros that were internally designed by the auditing company. As such, the templates provided have been entirely stripped of any company specific info. The program has not been changed to accommodate for this, as both the dummy files provided and original templates can be run without any adjustment.
+**Note:** The files [saved here](https://github.com/dwrlewis/Trial-Balance-Converter/tree/master/Test%20Files) match the format of the .xlsm template this program was designed for, but are minimum reproductions. This is because the original template contained a large number of macros that were internally designed by the auditing company. As such, the templates provided have been entirely stripped of any company specific info. The program has not been changed to accommodate for this, as both the dummy files provided and original templates can be run without any adjustment.
 
 ### 1.2 - Interpreter Settings
 This program was generated in Python 3.8.0 using the Pycharm IDE with the following interpreter settings:
