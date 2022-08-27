@@ -49,10 +49,10 @@ class DuplicateCorrection:
         self.on_off_warn_frame = tk.Frame(self.top_frame)
         self.on_off_warn_frame.grid(row=0, column=1, sticky='NSEW')
         self.on_off_warn_frame.rowconfigure(0, weight=1)
-        self.on_off_warn_label = tk.Label(self.on_off_warn_frame, fg='#8ace7e',
-                                          text='Descriptions will not be adjusted. COA cannot be generated without\n'
-                                               'checking descriptions, raw COA will be exported instead.',
-                                          justify='left')
+        self.on_off_warn_label = tk.Label(self.on_off_warn_frame,
+                                          text='Descriptions will not be adjusted. New COA cannot be generated '
+                                               'without\nchecking descriptions first, unadjusted raw COA will '
+                                               'be exported instead.', justify='left', fg='#ffda66')
         self.on_off_warn_label.grid(row=0, column=0, sticky='NSW')
         # endregion
 
@@ -223,7 +223,7 @@ class DuplicateCorrection:
 
         self.on_off_warn_label.config(text='Descriptions will not be adjusted. New COA cannot be generated without\n'
                                            'checking descriptions first, unadjusted raw COA will be exported instead.',
-                                      fg='#8ace7e')
+                                      fg='#ffda66')
 
         self.disable_children(self.options_frame)
 

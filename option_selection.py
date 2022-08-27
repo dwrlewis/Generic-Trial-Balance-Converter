@@ -45,7 +45,8 @@ class PrefixOptions:
         self.on_off_warn_frame.grid(row=0, column=1, sticky='NSEW')
         self.on_off_warn_frame.rowconfigure(0, weight=1)
         self.on_off_warn_label = tk.Label(self.on_off_warn_frame, text='Prefixes not selected. Codes & Companies '
-                                                                       'will be exported as is.', justify='left')
+                                                                       'will be exported as is.', justify='left',
+                                          fg='#ffda66')
         self.on_off_warn_label.grid(row=0, column=0, sticky='NSW')
         # endregion
 
@@ -235,7 +236,8 @@ class PrefixOptions:
         self.save_frame = tk.Frame(self.top_frame)
         self.save_frame.grid(row=2, column=0, sticky='NSEW')
         self.save_frame.columnconfigure(0, weight=1)
-        self.save_button = tk.Button(self.save_frame, text='Check & Save Mappings:', height=3, command=self.map_prefixes)
+        self.save_button = tk.Button(self.save_frame, text='Check & Save Mappings:', height=3,
+                                     command=self.map_prefixes)
         self.save_button.grid(row=0, column=0, sticky='EW')
         # Warning Frame & Label
         self.output_frame = tk.Frame(self.top_frame)
@@ -304,7 +306,7 @@ class PrefixOptions:
     def disable_canvas(self):
         # Clears warning label
         self.on_off_warn_label.config(text='Prefixes not selected. Codes & Companies will be exported as is.',
-                                      fg='#8ace7e')
+                                      fg='#ffda66')
 
         # Resets canvas
         self.data_can.delete()
