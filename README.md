@@ -124,7 +124,7 @@ When all mappings have been filled out, pressing “Check & Save Mappings:” wi
 
 ![alt text](https://github.com/dwrlewis/Trial-Balance-Converter/blob/b8b31d343d18f8018609b37da280b9a90f6349d5/Readme%20Gifs%20&%20Images/2.4%20-%20Map%20Checks.gif)
 
-When all mappings are confirmed, move to the ‘Description Settings’ tab.
+When all mappings are confirmed, move to the "Description Settings" tab.
 
 
 #  <a name="desc"></a>4.0 – Description Settings:
