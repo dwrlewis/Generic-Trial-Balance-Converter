@@ -94,8 +94,5 @@ if __name__ == '__main__':
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
 
-    logo = tk.PhotoImage(file='bdo logo.png')
-    root.iconphoto(False, logo)
-
     MainFrame(root)
     root.mainloop()

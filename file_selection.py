@@ -347,7 +347,7 @@ class FileSelect:
                         # region 7.1) Check if header data matches TB template format, else add warning tix balloon
                         col_list = [header for header in pd.read_excel(data, sheet_name='Chart of Accounts',
                                                                        usecols='A:C').columns]
-                        if col_list != ['CoA Account Code', 'CoA Account Name', 'BDO FSA']:
+                        if col_list != ['CoA Account Code', 'CoA Account Name', 'FSA']:
                             coa.config(bg='#ff684c')
                             error_message = 'Tab has non-standard headers for advantage template.'
                             error_popup = tix.Balloon(self.data_can_sub_frame, bg='#ffda66')
